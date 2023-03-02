@@ -1,0 +1,85 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+cars
+{% endblock title %}
+
+{% block content %}
+   <h1>Список машин</h1>
+   <button onclick=location.href="/cars/create"> Добавить</button>
+   <hr>
+   {% if cars %}
+       <table border="1" style="text-align:center">
+           <tr>
+               <td><b>п/п</b></td>
+               <td><b>Зав. № машины</b></td>
+               <td><b>Модель техники</b></td>
+               <td><b>Модель двигателя</b></td>
+               <td><b>Зав. № двигателя</b></td>
+               <td><b>Модель трансмиссии</b></td>
+               <td><b>Зав. № трансмиссии</b></td>
+               <td><b>Модель ведущего моста</b></td>
+               <td><b>Зав. № ведущего моста</b></td>
+               <td><b>Модель управляемого моста</b></td>
+               <td><b>Зав. № управляемого моста</b></td>
+               <td><b>Договор поставки №, дата.</b></td>
+               <td><b>Дата отгрузки с завода</b></td>
+               <td><b>Грузополучатель (конечный потребитель)</b></td>
+               <td><b>Адрес поставки (эксплуатации)</b></td>
+               <td><b>Комплектация (доп. опции)</b></td>
+               <td><b>Клиент</b></td>
+               <td><b>Сервисная организация</b></td>
+
+           </tr>
+           {% for car in cars %}
+           <tr>
+                <td><b>{{ car.id }}</b></td>
+                <td><b>{{ car.serial_number }}</b></td>
+                <td><b>{{ car.technique_model }}</b></td>
+                <td><b>{{ car.engine_model }}</b></td>
+                <td><b>{{ car.engine_number }}</b></td>
+                <td><b>{{ car.transmission_model }}</b></td>
+                <td><b>{{ car.transmission_number }}</b></td>
+                <td><b>{{ car.drive_axle_model }}</b></td>
+                <td><b>{{ car.drive_axle_number }}</b></td>
+                <td><b>{{ car.steerable_axle_model }}</b></td>
+                <td><b>{{ car.steerable_axle_number }}</b></td>
+                <td><b>{{ car.supply_contract }}</b></td>
+                <td><b>{{ car.shipping_date }}</b></td>
+                <td><b>{{ car.consignee }}</b></td>
+                <td><b>{{ car.delivery_address }}</b></td>
+                <td><b>{{ car.equipment }}</b></td>
+                <td><b>{{ car.client }}</b></td>
+                <td><b>{{ car.service_company }}</b></td>
+                <!--<td><button onclick=location.href="/cars/{{post.id}}"> Подробнее</button></td>-->
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>машин нет!</h2>
+   {% endif %}
+
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
