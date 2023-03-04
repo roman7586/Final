@@ -7,3 +7,10 @@ class CarFilter(FilterSet):
 
        fields = {
            'technique_model__name': ['icontains']}
+       
+class CarFilterNoAut(FilterSet):
+   class Meta:
+       model = Car
+
+       fields = {
+           'serial_number': ['icontains']}
