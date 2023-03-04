@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView
 from .forms import CreateCarForm
 
-from .models import Car
+from .models import Car, Engine_model, Technique_model
 
 
 class CarCreate(CreateView):
@@ -17,7 +17,16 @@ class CarCreate(CreateView):
     #    self.object.save()
     #    return HttpResponseRedirect(self.get_success_url())
 
-#def CreateDirectory (request): #Функция по форме сохранения каждого справочника Модель 
+def createdirectory (request, id, type): #Функция по форме сохранения каждого справочника Модель 
+
+    if type == "techniqueModel":
+        item = Technique_model.objects.get(id=id)
+        return render(request, 'dictionary.html', {'item': item})
+    else:
+        if type == "engineModel":
+            item = Engine_model.objects.get(id=id)
+        return render(request, 'dictionary.html', {'item': item})
+    
 #    form = Directory(request.POST)
 #    if form.is_valid():
 #        form.save()

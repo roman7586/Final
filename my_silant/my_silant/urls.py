@@ -22,6 +22,4 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/cars/')), # редирект на первой странице
     path('cars/', include('silant.urls')),
 
-
-
 ]

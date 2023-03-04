@@ -37,8 +37,8 @@ cars
            <tr>
                 <td><b>{{ car.id }}</b></td>
                 <td><b>{{ car.serial_number }}</b></td>
-                <td><b>{{ car.technique_model }}</b></td>
-                <td><b>{{ car.engine_model }}</b></td>
+                <td><b><a href="dictionary/techniqueModel/{{car.technique_model.id}}/">{{ car.technique_model }}</a></b></td>
+                <td><b><a href="dictionary/engineModel/{{car.engine_model.id}}/">{{ car.engine_model }}</a></b></td>
                 <td><b>{{ car.engine_number }}</b></td>
                 <td><b>{{ car.transmission_model }}</b></td>
                 <td><b>{{ car.transmission_number }}</b></td>
