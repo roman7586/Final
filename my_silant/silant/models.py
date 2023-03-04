@@ -1,69 +1,49 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-class Technique_model(models.Model):
+class Base_dictionary(models.Model):
     name = models.TextField(unique=True, verbose_name='Название')
     description = models.TextField(blank=True, verbose_name='Описание')
 
+    class Meta:
+        abstract = True
+        
     def __str__(self):
         return f'{self.name}'
+    
+# Create your models here.
+class Technique_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель техники'
 
 
-class Engine_model(models.Model):
-    name = models.TextField(unique=True, verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    def __str__(self):
-        return f'{self.name}'
+class Engine_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель двигателя'
 
 
-class Transmission_model(models.Model):
-    name = models.TextField(unique=True, verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    def __str__(self):
-        return f'{self.name}'
+class Transmission_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель трансмиссии'
 
 
-class Drive_axle_model(models.Model):
-    name = models.TextField(unique=True, verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    def __str__(self):
-        return f'{self.name}'
+class Drive_axle_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель ведущего моста'
 
 
-class Steerable_axle_model(models.Model):
-    name = models.TextField(unique=True, verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    def __str__(self):
-        return f'{self.name}'
+class Steerable_axle_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель управляемого моста'
 
 
-class Service_company(models.Model):
+class Service_company(Base_dictionary):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Имя пользователя')
-    name = models.TextField(unique=True, verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    def __str__(self):
-        return f'{self.name}'
 
     class Meta:
         verbose_name = 'Сервисные компании'
@@ -96,18 +76,14 @@ class Car(models.Model):
         ordering = ['shipping_date']
 
 
-class Type_maintenance(models.Model):
-    name = models.TextField(verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
+class Type_maintenance(Base_dictionary):
 
     class Meta:
         verbose_name = 'Вид ТО'
         verbose_name_plural = 'Вид ТО'
 
 
-class Organization_maintenance(models.Model):
-        name = models.TextField(verbose_name='Название')
-        description = models.TextField(blank=True, verbose_name='Описание')
+class Organization_maintenance(Base_dictionary):
   
         class Meta:
             verbose_name = 'Организация, проводившая ТО'
@@ -131,17 +107,13 @@ class Maintenance(models.Model):
 
 
 
-class Failure_node(models.Model):
-    name = models.TextField(verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
+class Failure_node(Base_dictionary):
 
     class Meta:
         verbose_name = 'Узел отказа'
 
 
-class Recovery_method(models.Model):
-    name = models.TextField(verbose_name='Название')
-    description = models.TextField(blank=True, verbose_name='Описание')
+class Recovery_method(Base_dictionary):
 
     class Meta:
         verbose_name = 'Способ восстановления'
