@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
 from .filters import CarFilter,CarFilterNoAut
 from .forms import CreateCarForm
 
-from .models import Car, Engine_model, Technique_model
+from .models import Car, Drive_axle_model, Engine_model, Service_company, Steerable_axle_model, Technique_model, Transmission_model
 
 
 class CarCreate(CreateView):
@@ -19,16 +19,39 @@ class CarCreate(CreateView):
     #    self.object.save()
     #    return HttpResponseRedirect(self.get_success_url())
 
+class CarEdit(UpdateView):
+    form_class = CreateCarForm
+    model = Car
+    template_name = 'CreateCar.html'
+    permission_required = ('silant.edit_car', )
 
-def createdirectory (request, id, type): #Функция по форме сохранения каждого справочника Модель 
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.user = self.request.user
+#         self.object.save()
+#         return HttpResponseRedirect(self.get_success_url())
+
+def viewdirectory (request, id, type): #Функция по форме сохранения каждого справочника Модель 
 
     if type == "techniqueModel":
         item = Technique_model.objects.get(id=id)
-        return render(request, 'dictionary.html', {'item': item})
     else:
         if type == "engineModel":
             item = Engine_model.objects.get(id=id)
-        return render(request, 'dictionary.html', {'item': item})
+        else:
+            if type == "transmissionModel":
+                item = Transmission_model.objects.get(id=id)
+            else:
+                if type == "driveAxleModel":
+                    item = Drive_axle_model.objects.get(id=id)
+                else:
+                    if type == "steerableAxleModel":
+                        item = Steerable_axle_model.objects.get(id=id)
+                    else:
+                        if type == "ServiceCompany":
+                            item = Service_company.objects.get(id=id)
+    return render(request, 'dictionary.html', {'item': item})
+                
     
 #    form = Directory(request.POST)
 #    if form.is_valid():

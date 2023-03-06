@@ -34,6 +34,7 @@ cars
                <td><b>Комплектация (доп. опции)</b></td>
                <td><b>Клиент</b></td>
                <td><b>Сервисная организация</b></td>
+               <td><b>Операции</b></td>
 
            </tr>
            {% for car in cars %}
@@ -43,11 +44,11 @@ cars
                 <td><b><a href="dictionary/techniqueModel/{{car.technique_model.id}}/">{{ car.technique_model }}</a></b></td>
                 <td><b><a href="dictionary/engineModel/{{car.engine_model.id}}/">{{ car.engine_model }}</a></b></td>
                 <td><b>{{ car.engine_number }}</b></td>
-                <td><b>{{ car.transmission_model }}</b></td>
+                <td><b><a href="dictionary/transmissionModel/{{car.transmission_model.id}}/">{{ car.transmission_model }}</a></b></td>
                 <td><b>{{ car.transmission_number }}</b></td>
-                <td><b>{{ car.drive_axle_model }}</b></td>
+                <td><b><a href="dictionary/driveAxleModel/{{car.drive_axle_model.id}}/">{{ car.drive_axle_model }}</a></b></td>
                 <td><b>{{ car.drive_axle_number }}</b></td>
-                <td><b>{{ car.steerable_axle_model }}</b></td>
+                <td><b><a href="dictionary/steerableAxleModel/{{car.steerable_axle_model.id}}/">{{ car.steerable_axle_model }}</a></b></td>
                 <td><b>{{ car.steerable_axle_number }}</b></td>
                 <td><b>{{ car.supply_contract }}</b></td>
                 <td><b>{{ car.shipping_date }}</b></td>
@@ -55,8 +56,8 @@ cars
                 <td><b>{{ car.delivery_address }}</b></td>
                 <td><b>{{ car.equipment }}</b></td>
                 <td><b>{{ car.client }}</b></td>
-                <td><b>{{ car.service_company }}</b></td>
-                <!--<td><button onclick=location.href="/cars/{{post.id}}"> Подробнее</button></td>-->
+                <td><b><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></b></td>
+                <td><button onclick=location.href="/cars/edit/{{car.id}}">Изменить</button></td>
            </tr>
            {% endfor %}
 
