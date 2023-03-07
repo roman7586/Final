@@ -3,9 +3,9 @@ from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
 from .filters import CarFilter,CarFilterNoAut
-from .forms import CreateCarForm, CreateMaintenanceForm
+from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
 
-from .models import Car, Drive_axle_model, Engine_model, Maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model
+from .models import Car, Complaints, Drive_axle_model, Engine_model, Maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model
 
 
 class CarCreate(CreateView):
@@ -114,21 +114,77 @@ class MaintenanceCreate(CreateView):
     form_class = CreateMaintenanceForm
     template_name = 'Maintenance/CreateMaintenance.html'
     permission_required = ('silant.create_maintenance',)
+    success_url = '/cars/maintenances/'
 
-    def form_valid(self, form):
-       self.object = form.save(commit=False)
-       self.object.user = self.request.user
-       self.object.save()
-       return HttpResponseRedirect(self.get_success_url())
+    def form_valid(self, form): #редирект на список
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())
+    
 
 class MaintenanceEdit(UpdateView):
     form_class = CreateMaintenanceForm
     model = Maintenance
     template_name = 'Maintenance/CreateMaintenance.html'
     permission_required = ('silant.edit_maintenance', )
+    success_url = '/cars/maintenances/'
 
+    
+    def form_valid(self, form): #редирект на список
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())
+    
 #     def form_valid(self, form):
 #         self.object = form.save(commit=False)
 #         self.object.user = self.request.user
 #         self.object.save()
 #         return HttpResponseRedirect(self.get_success_url())          
+
+#РЕКЛАМАЦИИ
+class ComplaintsList(ListView): #Общий список
+    model = Complaints
+    ordering = 'date_of_refusal'
+    template_name = 'Complaints/Complaints.html'
+    context_object_name = 'сomplaints'
+    paginate_by = 10
+
+
+    # def get_queryset(self):
+    #    # Получаем обычный запрос
+    #     queryset = super().get_queryset()
+    #     if self.request.user.is_authenticated:
+    #         self.filterset = CarFilter(self.request.GET, queryset)
+    #     else:
+    #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
+
+class ComplaintsCreate(CreateView):
+    model = Complaints
+    form_class = CreateComplaintsForm
+    template_name = 'Complaints/CreateComplaints.html'
+    permission_required = ('silant.create_сomplaints',)
+    success_url = '/cars/сomplaints/'
+
+    
+    def form_valid(self, form): #редирект на список
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())
+    
+
+class ComplaintsEdit(UpdateView):
+    form_class = CreateComplaintsForm
+    model = Complaints
+    template_name = 'Complaints/CreateComplaints.html'
+    permission_required = ('silant.edit_сomplaints', )
+    success_url = '/cars/сomplaints/'
+
+    
+    def form_valid(self, form):
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())      

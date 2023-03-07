@@ -2,42 +2,47 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-maintenances
+сomplaints
 {% endblock title %}
 
 {% block content %}
-   <h1>Техническое обслуживание</h1>
-   <button onclick=location.href="/cars/maintenances/create"> Добавить</button>
-   <form action="" method="get">
+   <h1>Рекламации</h1>
+   <button onclick=location.href="/cars/сomplaints/create"> Добавить</button>
+   <!-- <form action="" method="get">
         {{ filterset.form.as_p }}
         <input type="submit" value="Найти" />
-    </form>
+    </form> -->
    <hr>
-   {% if maintenances %}
+   {% if сomplaints %}
        <table border="1" style="text-align:center">
            <tr>
                <td><b>п/п</b></td>
-               <td><b>Вид ТО</b></td>
-               <td><b>Дата проведения ТО</b></td>
+               <td><b>Дата отказа</b></td>
                <td><b>Наработка м/час</b></td>
-               <td><b>№ заказа-наряда</b></td>
-               <td><b>Дата заказа-наряда</b></td>
-               <td><b>Организация, проводившая ТО</b></td>
+               <td><b>Узел отказа</b></td>
+               <td><b>Характер отказа</b></td>
+               <td><b>Способ восстановления</b></td>
+               <td><b>Используемые запасные части</b></td>
+               <td><b>Дата восстановления</b></td>
+               <td><b>Время простоя техники</b></td>
                <td><b>Машина</b></td>
                <td><b>Сервисная организация</b></td>
                <td><b>Операции</b></td>
            </tr>
-           {% for maintenance in maintenances %}
+           {% for сomplaint in сomplaints %}
            <tr>
-                <td><b>{{ maintenance.id }}</b></td>
-                <td><b>{{ maintenance.type_maintenance }}</b></td>
-                <td><b>{{ maintenance.maintenance_date }}</a></b></td>
-                <td><b>{{ maintenance.operating_time }}</a></b></td>
-                <td><b>{{ maintenance.work_order }}</b></td>
-                <td><b>{{ maintenance.date_work_order }}</a></b></td>
-                <td><b>{{ maintenance.organization_maintenance }}</b></td>
-                <td><b>{{ maintenance.car }}</a></b></td>
-                <td><button onclick=location.href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</button></td>
+                <td><b>{{ сomplaint.id }}</b></td>
+                <td><b>{{ сomplaint.date_of_refusal }}</b></td>
+                <td><b>{{ сomplaint.operating_time }}</a></b></td>
+                <td><b>{{ сomplaint.failure_node }}</a></b></td>
+                <td><b>{{ сomplaint.description_failure }}</b></td>
+                <td><b>{{ сomplaint.recovery_method }}</a></b></td>
+                <td><b>{{ сomplaint.parts_used }}</b></td>
+                <td><b>{{ сomplaint.date_of_restoration }}</a></b></td>
+                <td><b>{{ сomplaint.equipment_downtime }}</b></td>
+                <td><b>{{ сomplaint.car }}</b></td>
+                <td><b>{{ сomplaint.service_company }}</b></td>
+                <td><button onclick=location.href="/cars/сomplaints/edit/{{сomplaint.id}}">Изменить</button></td>
            </tr>
            {% endfor %}
 

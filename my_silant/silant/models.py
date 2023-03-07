@@ -16,38 +16,39 @@ class Technique_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель техники'
+        verbose_name_plural = 'Модели техники'
 
 
 class Engine_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель двигателя'
-
+        verbose_name_plural = 'Модели двигателя'
 
 class Transmission_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель трансмиссии'
-
+        verbose_name_plural = 'Модели трансмиссии'
 
 class Drive_axle_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель ведущего моста'
-
+        verbose_name_plural = 'Модели ведущего моста'
 
 class Steerable_axle_model(Base_dictionary):
 
     class Meta:
         verbose_name = 'Модель управляемого моста'
-
+        verbose_name_plural = 'Модели управляемого моста'
 
 class Service_company(Base_dictionary):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Имя пользователя')
 
     class Meta:
-        verbose_name = 'Сервисные компании'
-
+        verbose_name = 'Сервисная компания'
+        verbose_name_plural = 'Сервисные компании'
 
 class Car(models.Model):
     serial_number = models.TextField(max_length=30, unique=True, db_index=True, verbose_name='Зав. № машины')
@@ -73,6 +74,7 @@ class Car(models.Model):
 
     class Meta:
         verbose_name = 'Машины'
+        verbose_name_plural = 'Машины'
         ordering = ['shipping_date']
 
 
@@ -80,13 +82,14 @@ class Type_maintenance(Base_dictionary):
 
     class Meta:
         verbose_name = 'Вид ТО'
-        verbose_name_plural = 'Вид ТО'
+        verbose_name_plural = 'Виды ТО'
 
 
 class Organization_maintenance(Base_dictionary):
   
         class Meta:
             verbose_name = 'Организация, проводившая ТО'
+            verbose_name_plural = 'Организации, проводившая ТО'
 
 class Maintenance(models.Model):
     type_maintenance = models.ForeignKey(Type_maintenance, on_delete=models.CASCADE, verbose_name='Вид ТО')
@@ -103,6 +106,7 @@ class Maintenance(models.Model):
 
     class Meta:
         verbose_name = 'ТО'
+        verbose_name_plural = 'ТО'      
         ordering = ['maintenance_date']
 
 
@@ -111,13 +115,14 @@ class Failure_node(Base_dictionary):
 
     class Meta:
         verbose_name = 'Узел отказа'
+        verbose_name_plural = 'Узлы отказа'
 
 
 class Recovery_method(Base_dictionary):
 
     class Meta:
         verbose_name = 'Способ восстановления'
-
+        verbose_name_plural = 'Способы восстановления'
 
 class Complaints(models.Model):
     date_of_refusal = models.DateField(verbose_name='Дата отказа')
@@ -136,5 +141,6 @@ class Complaints(models.Model):
 
     class Meta:
         verbose_name = 'Рекламации'
+        verbose_name_plural = 'Рекламации'
         ordering = ['date_of_refusal']
 

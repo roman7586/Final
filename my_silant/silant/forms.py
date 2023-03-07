@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Car, Maintenance
+from .models import Car, Complaints, Maintenance
 from django.utils import timezone
 
 now = timezone.now()
@@ -30,5 +30,16 @@ class CreateMaintenanceForm(forms.ModelForm):
         widgets = {'maintenance_date': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1)))),
                    'work_order': forms.Textarea(attrs={'rows': 1}),
                    'date_work_order': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1)))),
+        }
+        fields = '__all__'
+
+class CreateComplaintsForm(forms.ModelForm):
+    class Meta:
+        model = Complaints
+        widgets = {'date_of_refusal': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1)))),
+                   'description_failure': forms.Textarea(attrs={'rows': 1}),
+                   'parts_used': forms.Textarea(attrs={'rows': 1}),
+                   'date_of_restoration': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))))
+
         }
         fields = '__all__'
