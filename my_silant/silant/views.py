@@ -1,10 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
 from .filters import CarFilter,CarFilterNoAut
-from .forms import CreateCarForm
+from .forms import CreateCarForm, CreateMaintenanceForm
 
-from .models import Car, Drive_axle_model, Engine_model, Service_company, Steerable_axle_model, Technique_model, Transmission_model
+from .models import Car, Drive_axle_model, Engine_model, Maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model
 
 
 class CarCreate(CreateView):
@@ -92,3 +93,42 @@ class CarList(ListView): #Общий список машин
 def dictionaries (request):
     return render(request, 'dictionaries.html')
     
+class MaintenanceList(ListView): #Общий список ТО
+    model = Maintenance
+    ordering = 'date_work_order'
+    template_name = 'Maintenance/Maintenances.html'
+    context_object_name = 'maintenances'
+    paginate_by = 10
+
+
+    # def get_queryset(self):
+    #    # Получаем обычный запрос
+    #     queryset = super().get_queryset()
+    #     if self.request.user.is_authenticated:
+    #         self.filterset = CarFilter(self.request.GET, queryset)
+    #     else:
+    #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
+
+class MaintenanceCreate(CreateView):
+    model = Maintenance
+    form_class = CreateMaintenanceForm
+    template_name = 'Maintenance/CreateMaintenance.html'
+    permission_required = ('silant.create_maintenance',)
+
+    def form_valid(self, form):
+       self.object = form.save(commit=False)
+       self.object.user = self.request.user
+       self.object.save()
+       return HttpResponseRedirect(self.get_success_url())
+
+class MaintenanceEdit(UpdateView):
+    form_class = CreateMaintenanceForm
+    model = Maintenance
+    template_name = 'Maintenance/CreateMaintenance.html'
+    permission_required = ('silant.edit_maintenance', )
+
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.user = self.request.user
+#         self.object.save()
+#         return HttpResponseRedirect(self.get_success_url())          
