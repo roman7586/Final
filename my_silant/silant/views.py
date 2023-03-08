@@ -13,24 +13,26 @@ class CarCreate(CreateView):
     form_class = CreateCarForm
     template_name = 'CreateCar.html'
     permission_required = ('silant.create_car',)
+    success_url = '/cars/'
 
-    #def form_valid(self, form):
-    #    self.object = form.save(commit=False)
-    #    self.object.user = self.request.user
-    #    self.object.save()
-    #    return HttpResponseRedirect(self.get_success_url())
+    def form_valid(self, form): #редирект на список
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())
 
 class CarEdit(UpdateView):
     form_class = CreateCarForm
     model = Car
     template_name = 'CreateCar.html'
     permission_required = ('silant.edit_car', )
+    success_url = '/cars/'
 
-#     def form_valid(self, form):
-#         self.object = form.save(commit=False)
-#         self.object.user = self.request.user
-#         self.object.save()
-#         return HttpResponseRedirect(self.get_success_url())
+    def form_valid(self, form): #редирект на список
+         self.object = form.save(commit=False)
+         self.object.user = self.request.user
+         self.object.save()
+         return redirect(self.get_success_url())
 
 def viewdirectory (request, id, type): #Функция по форме сохранения каждого справочника Модель 
 
@@ -184,7 +186,7 @@ class ComplaintsEdit(UpdateView):
 
     
     def form_valid(self, form):
-         self.object = form.save(commit=False)
-         self.object.user = self.request.user
-         self.object.save()
-         return redirect(self.get_success_url())      
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return redirect(self.get_success_url())      

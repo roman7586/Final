@@ -34,14 +34,14 @@
                 <td><b>{{ сomplaint.id }}</b></td>
                 <td><b>{{ сomplaint.date_of_refusal }}</b></td>
                 <td><b>{{ сomplaint.operating_time }}</a></b></td>
-                <td><b>{{ сomplaint.failure_node }}</a></b></td>
+                <td><b>{{ сomplaint.failure_node }}</a></b></td> <!--ссылку-->
                 <td><b>{{ сomplaint.description_failure }}</b></td>
-                <td><b>{{ сomplaint.recovery_method }}</a></b></td>
+                <td><b>{{ сomplaint.recovery_method }}</a></b></td> <!--ссылку-->
                 <td><b>{{ сomplaint.parts_used }}</b></td>
                 <td><b>{{ сomplaint.date_of_restoration }}</a></b></td>
                 <td><b>{{ сomplaint.equipment_downtime }}</b></td>
                 <td><b>{{ сomplaint.car }}</b></td>
-                <td><b>{{ сomplaint.service_company }}</b></td>
+                <td><b>{{ сomplaint.service_company }}</b></td> <!--ссылку-->
                 <td><button onclick=location.href="/cars/сomplaints/edit/{{сomplaint.id}}">Изменить</button></td>
            </tr>
            {% endfor %}

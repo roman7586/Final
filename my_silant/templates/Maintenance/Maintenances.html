@@ -30,13 +30,14 @@ maintenances
            {% for maintenance in maintenances %}
            <tr>
                 <td><b>{{ maintenance.id }}</b></td>
-                <td><b>{{ maintenance.type_maintenance }}</b></td>
+                <td><b>{{ maintenance.type_maintenance }}</b></td> <!--ссылку--> 
                 <td><b>{{ maintenance.maintenance_date }}</a></b></td>
                 <td><b>{{ maintenance.operating_time }}</a></b></td>
                 <td><b>{{ maintenance.work_order }}</b></td>
                 <td><b>{{ maintenance.date_work_order }}</a></b></td>
                 <td><b>{{ maintenance.organization_maintenance }}</b></td>
                 <td><b>{{ maintenance.car }}</a></b></td>
+                <td><b>{{ maintenance.service_company }}</a></b></td> <!--ссылку-->
                 <td><button onclick=location.href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</button></td>
            </tr>
            {% endfor %}

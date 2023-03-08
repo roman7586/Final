@@ -67,7 +67,7 @@ class Car(models.Model):
     delivery_address = models.TextField(max_length=150, blank=True, verbose_name='Адрес поставки (эксплуатации)')
     equipment = models.TextField(max_length=150, blank=True, verbose_name='Комплектация (доп. опции)')
     client = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Клиент')
-    service_company = models.ForeignKey(Service_company, null=True, on_delete=models.CASCADE, blank=True, verbose_name='Сервисная организация')
+    service_company = models.ForeignKey(Service_company, on_delete=models.CASCADE, blank=True, verbose_name='Сервисная организация')
 
     def __str__(self):
         return f'{self.serial_number}'
@@ -76,7 +76,6 @@ class Car(models.Model):
         verbose_name = 'Машины'
         verbose_name_plural = 'Машины'
         ordering = ['shipping_date']
-
 
 class Type_maintenance(Base_dictionary):
 
@@ -98,8 +97,8 @@ class Maintenance(models.Model):
     work_order = models.TextField(max_length=50, verbose_name='№ заказа-наряда')
     date_work_order = models.DateField(verbose_name='Дата заказа-наряда')
     organization_maintenance = models.ForeignKey(Organization_maintenance, on_delete=models.CASCADE, verbose_name='Организация, проводившая ТО')
-    car = models.OneToOneField(Car, on_delete=models.CASCADE, verbose_name='Машина')
-    service_company = models.OneToOneField(Service_company, on_delete=models.CASCADE,verbose_name='Сервисная организация')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name='Машина')
+    service_company = models.ForeignKey(Service_company, on_delete=models.CASCADE,verbose_name='Сервисная организация')
 
     def __str__(self):
         return f'{self.car}'
@@ -132,9 +131,9 @@ class Complaints(models.Model):
     recovery_method = models.ForeignKey(Recovery_method, on_delete=models.CASCADE, verbose_name='Способ восстановления')
     parts_used = models.TextField(verbose_name='Используемые запасные части')
     date_of_restoration = models.DateField(verbose_name='Дата восстановления') 
-    equipment_downtime = models.IntegerField(verbose_name='Время простоя техники')
-    car = models.OneToOneField(Car, on_delete=models.CASCADE, verbose_name='Машина')
-    service_company = models.OneToOneField(Service_company, on_delete=models.CASCADE, verbose_name='Сервисная организация')
+    equipment_downtime = models.IntegerField(verbose_name='Время простоя техники', null = True, blank=True, editable=False)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name='Машина')
+    service_company = models.ForeignKey(Service_company, on_delete=models.CASCADE, verbose_name='Сервисная организация')
 
     def __str__(self):
         return f'{self.car}'
@@ -143,4 +142,10 @@ class Complaints(models.Model):
         verbose_name = 'Рекламации'
         verbose_name_plural = 'Рекламации'
         ordering = ['date_of_refusal']
+
+
+def save(self, *args, **kwargs):
+    print('1')
+    self.equipment_downtime = 1 #(self.date_of_restoration - self.date_of_refusal).days
+    super(Complaints, self).save(*args, **kwargs)
 
