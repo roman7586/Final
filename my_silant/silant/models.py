@@ -144,8 +144,7 @@ class Complaints(models.Model):
         ordering = ['date_of_refusal']
 
 
-def save(self, *args, **kwargs):
-    print('1')
-    self.equipment_downtime = 1 #(self.date_of_restoration - self.date_of_refusal).days
-    super(Complaints, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.equipment_downtime = (self.date_of_restoration - self.date_of_refusal).days
+        super(Complaints, self).save(*args, **kwargs)
 

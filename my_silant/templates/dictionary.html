@@ -1,6 +1,15 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-    <h1>{{ item.name }}</h1>
-    <p>{{ item.description }}</p>
+<table border="1" style="text-align:center">
+    <tr>
+        <td><b>Наименование</b></td>
+        <td><b>Описание</b></td>
+    </tr>
+    <tr>
+        <td><b>{{ item.name }}</b></td>
+        <td><b>{{ item.description }}</b></td>
+    </tr>
+</table>
+
 {% endblock content %}
