@@ -1,19 +1,18 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView
-from django.contrib.auth.decorators import login_required
 from .filters import CarFilter,CarFilterNoAut, ComplaintsFilter, MaintenanceFilter
 from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Car, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
 
 
-class CarCreate(LoginRequiredMixin, CreateView):
+class CarCreate(PermissionRequiredMixin, CreateView):
     model = Car
     form_class = CreateCarForm
     template_name = 'CreateCar.html'
-    permission_required = ('silant.create_car',)
+    permission_required = ('silant.add_car',)
     success_url = '/cars/'
 
     def form_valid(self, form): #редирект на список
@@ -32,11 +31,11 @@ class CarCreate(LoginRequiredMixin, CreateView):
     #      context['filterset']=self.filterset
     #      return context
 
-class CarEdit(LoginRequiredMixin, UpdateView):
+class CarEdit(PermissionRequiredMixin, UpdateView):
     form_class = CreateCarForm
     model = Car
     template_name = 'CreateCar.html'
-    permission_required = ('silant.edit_car', )
+    permission_required = ('silant.change_car', )
     success_url = '/cars/'
 
     def form_valid(self, form): #редирект на список
@@ -75,7 +74,7 @@ def maintenancedirectory (request, id, type):
             item = Service_company.objects.get(id=id)
     return render(request, 'dictionary.html', {'item': item})
 
-def сomplaintdirectory (request, id, type):
+def complaintdirectory (request, id, type):
 
     if type == "failureNode":
         item = Failure_node.objects.get(id=id)
@@ -128,10 +127,11 @@ def dictionaries (request):
     return render(request, 'dictionaries.html')
     
 
-class MaintenanceList(LoginRequiredMixin, ListView): #Общий список ТО
+class MaintenanceList(PermissionRequiredMixin, ListView): #Общий список ТО
     model = Maintenance
     ordering = 'date_work_order'
     template_name = 'Maintenance/Maintenances.html'
+    permission_required = ('silant.view_maintenance',)
     context_object_name = 'maintenances'
     paginate_by = 10
 
@@ -147,11 +147,11 @@ class MaintenanceList(LoginRequiredMixin, ListView): #Общий список Т
         return context
 
 
-class MaintenanceCreate(LoginRequiredMixin, CreateView):
+class MaintenanceCreate(PermissionRequiredMixin, CreateView):
     model = Maintenance
     form_class = CreateMaintenanceForm
     template_name = 'Maintenance/CreateMaintenance.html'
-    permission_required = ('silant.create_maintenance',)
+    permission_required = ('silant.add_maintenance',)
     success_url = '/cars/maintenances/'
 
     def form_valid(self, form): #редирект на список
@@ -161,11 +161,11 @@ class MaintenanceCreate(LoginRequiredMixin, CreateView):
          return redirect(self.get_success_url())
     
 
-class MaintenanceEdit(LoginRequiredMixin, UpdateView):
+class MaintenanceEdit(PermissionRequiredMixin, UpdateView):
     form_class = CreateMaintenanceForm
     model = Maintenance
     template_name = 'Maintenance/CreateMaintenance.html'
-    permission_required = ('silant.edit_maintenance', )
+    permission_required = ('silant.change_maintenance', )
     success_url = '/cars/maintenances/'
 
     
@@ -186,7 +186,8 @@ class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
     model = Complaints
     ordering = 'date_of_refusal'
     template_name = 'Complaints/Complaints.html'
-    context_object_name = 'сomplaints'
+    permission_required = ('silant.view_complaints',)
+    context_object_name = 'complaints'
     paginate_by = 10
 
     def get_queryset(self):
@@ -200,12 +201,12 @@ class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
         context['filterset'] = self.filterset
         return context
 
-class ComplaintsCreate(LoginRequiredMixin, CreateView):
+class ComplaintsCreate(PermissionRequiredMixin, CreateView):
     model = Complaints
     form_class = CreateComplaintsForm
     template_name = 'Complaints/CreateComplaints.html'
-    permission_required = ('silant.create_сomplaints',)
-    success_url = '/cars/сomplaints/'
+    permission_required = ('silant.add_complaints',)
+    success_url = '/cars/complaints/'
 
     
     def form_valid(self, form): #редирект на список
@@ -215,12 +216,12 @@ class ComplaintsCreate(LoginRequiredMixin, CreateView):
          return redirect(self.get_success_url())
     
 
-class ComplaintsEdit(LoginRequiredMixin, UpdateView):
+class ComplaintsEdit(PermissionRequiredMixin, UpdateView):
     form_class = CreateComplaintsForm
     model = Complaints
     template_name = 'Complaints/CreateComplaints.html'
-    permission_required = ('silant.edit_сomplaints', )
-    success_url = '/cars/сomplaints/'
+    permission_required = ('silant.change_complaints', )
+    success_url = '/cars/complaints/'
 
     
     def form_valid(self, form):
