@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
-from .filters import CarFilter,CarFilterNoAut
+from .filters import CarFilter,CarFilterNoAut, ComplaintsFilter, MaintenanceFilter
 from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -127,6 +127,7 @@ class CarList(ListView): #Общий список машин
 def dictionaries (request):
     return render(request, 'dictionaries.html')
     
+
 class MaintenanceList(LoginRequiredMixin, ListView): #Общий список ТО
     model = Maintenance
     ordering = 'date_work_order'
@@ -134,14 +135,17 @@ class MaintenanceList(LoginRequiredMixin, ListView): #Общий список Т
     context_object_name = 'maintenances'
     paginate_by = 10
 
+    def get_queryset(self):
+       # Получаем обычный запрос
+        queryset = super().get_queryset()
+        self.filterset = MaintenanceFilter(self.request.GET, queryset)
+        return self.filterset.qs
+      
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        return context
 
-    # def get_queryset(self):
-    #    # Получаем обычный запрос
-    #     queryset = super().get_queryset()
-    #     if self.request.user.is_authenticated:
-    #         self.filterset = CarFilter(self.request.GET, queryset)
-    #     else:
-    #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
 
 class MaintenanceCreate(LoginRequiredMixin, CreateView):
     model = Maintenance
@@ -185,14 +189,16 @@ class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
     context_object_name = 'сomplaints'
     paginate_by = 10
 
-
-    # def get_queryset(self):
-    #    # Получаем обычный запрос
-    #     queryset = super().get_queryset()
-    #     if self.request.user.is_authenticated:
-    #         self.filterset = CarFilter(self.request.GET, queryset)
-    #     else:
-    #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
+    def get_queryset(self):
+       # Получаем обычный запрос
+        queryset = super().get_queryset()
+        self.filterset = ComplaintsFilter(self.request.GET, queryset)
+        return self.filterset.qs
+      
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        return context
 
 class ComplaintsCreate(LoginRequiredMixin, CreateView):
     model = Complaints
