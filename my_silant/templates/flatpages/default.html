@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Доска обьявлений </title>
+        <title>Приложение СИЛАНТ </title>
 
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
@@ -28,12 +28,12 @@
                             <a class="nav-link" href="/admin/">Админам</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/cars/dictionaries/">Справочники</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="/cars/">Машины</a>
                         </li>
                         {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/cars/dictionaries/">Смежные справочники</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/cars/maintenances/">ТО</a>
                             </li>
@@ -42,21 +42,19 @@
                             </li>
                         {% endif %}
                     </ul>
-
                     {% if user.is_authenticated %}
-
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/logout/">Выйти</a>
-                        </li>
-                    </ul>
-                    <a class="nav-link" href="/accounts/email/">Вошли как {{request.user.username}}</a>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout/">Выйти</a>
+                            </li>
+                        </ul>
+                        <a class="nav-link" href="/accounts/email/">Вошли как {{request.user.username}}</a>
                     {% else %}
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/login/">Войти</a>
-                        </li>
-                    </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login/">Войти</a>
+                            </li>
+                        </ul>
                     {% endif %}
                 </div>
             </div>

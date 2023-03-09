@@ -4,11 +4,12 @@ from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
 from .filters import CarFilter,CarFilterNoAut
 from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Car, Complaints, Drive_axle_model, Engine_model, Maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model
+from .models import Car, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
 
 
-class CarCreate(CreateView):
+class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
     form_class = CreateCarForm
     template_name = 'CreateCar.html'
@@ -20,8 +21,18 @@ class CarCreate(CreateView):
          self.object.user = self.request.user
          self.object.save()
          return redirect(self.get_success_url())
+    
+    # def get_queryset(self): # Надо отфильтровать список под клиента, если вошёл под клиентом
+    #     queryset = Car.objects.filter(client__user=self.request.user)
+    #     self.filterset = CarFilter(self.request.GET, queryset)
+    #     return self.filterset.qs
 
-class CarEdit(UpdateView):
+    # def get_context_data(self, **kwargs):
+    #      context = super().get_context_data(**kwargs)
+    #      context['filterset']=self.filterset
+    #      return context
+
+class CarEdit(LoginRequiredMixin, UpdateView):
     form_class = CreateCarForm
     model = Car
     template_name = 'CreateCar.html'
@@ -34,7 +45,7 @@ class CarEdit(UpdateView):
          self.object.save()
          return redirect(self.get_success_url())
 
-def viewdirectory (request, id, type): #Функция по форме сохранения каждого справочника Модель 
+def cardirectory (request, id, type): #Функция по форме отображения каждого справочника Модель 
 
     if type == "techniqueModel":
         item = Technique_model.objects.get(id=id)
@@ -53,6 +64,27 @@ def viewdirectory (request, id, type): #Функция по форме сохр�
                     else:
                         if type == "ServiceCompany":
                             item = Service_company.objects.get(id=id)
+    return render(request, 'dictionary.html', {'item': item})
+
+def maintenancedirectory (request, id, type):
+
+    if type == "typeMaintenance":
+        item = Type_maintenance.objects.get(id=id)
+    else:
+        if type == "serviceCompany":
+            item = Service_company.objects.get(id=id)
+    return render(request, 'dictionary.html', {'item': item})
+
+def сomplaintdirectory (request, id, type):
+
+    if type == "failureNode":
+        item = Failure_node.objects.get(id=id)
+    else:
+        if type == "recoveryMethod":
+            item = Recovery_method.objects.get(id=id)
+        else:
+            if type == "serviceCompany":
+                item = Service_company.objects.get(id=id)
     return render(request, 'dictionary.html', {'item': item})
                 
     
@@ -95,7 +127,7 @@ class CarList(ListView): #Общий список машин
 def dictionaries (request):
     return render(request, 'dictionaries.html')
     
-class MaintenanceList(ListView): #Общий список ТО
+class MaintenanceList(LoginRequiredMixin, ListView): #Общий список ТО
     model = Maintenance
     ordering = 'date_work_order'
     template_name = 'Maintenance/Maintenances.html'
@@ -111,7 +143,7 @@ class MaintenanceList(ListView): #Общий список ТО
     #     else:
     #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
 
-class MaintenanceCreate(CreateView):
+class MaintenanceCreate(LoginRequiredMixin, CreateView):
     model = Maintenance
     form_class = CreateMaintenanceForm
     template_name = 'Maintenance/CreateMaintenance.html'
@@ -125,7 +157,7 @@ class MaintenanceCreate(CreateView):
          return redirect(self.get_success_url())
     
 
-class MaintenanceEdit(UpdateView):
+class MaintenanceEdit(LoginRequiredMixin, UpdateView):
     form_class = CreateMaintenanceForm
     model = Maintenance
     template_name = 'Maintenance/CreateMaintenance.html'
@@ -146,7 +178,7 @@ class MaintenanceEdit(UpdateView):
 #         return HttpResponseRedirect(self.get_success_url())          
 
 #РЕКЛАМАЦИИ
-class ComplaintsList(ListView): #Общий список
+class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
     model = Complaints
     ordering = 'date_of_refusal'
     template_name = 'Complaints/Complaints.html'
@@ -162,7 +194,7 @@ class ComplaintsList(ListView): #Общий список
     #     else:
     #         self.filterset = CarFilterNoAut(self.request.GET, queryset)
 
-class ComplaintsCreate(CreateView):
+class ComplaintsCreate(LoginRequiredMixin, CreateView):
     model = Complaints
     form_class = CreateComplaintsForm
     template_name = 'Complaints/CreateComplaints.html'
@@ -177,7 +209,7 @@ class ComplaintsCreate(CreateView):
          return redirect(self.get_success_url())
     
 
-class ComplaintsEdit(UpdateView):
+class ComplaintsEdit(LoginRequiredMixin, UpdateView):
     form_class = CreateComplaintsForm
     model = Complaints
     template_name = 'Complaints/CreateComplaints.html'

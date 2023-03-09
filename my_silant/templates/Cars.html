@@ -6,35 +6,39 @@ cars
 {% endblock title %}
 
 {% block content %}
-   <h1>Список машин</h1>
-   <button onclick=location.href="/cars/create"> Добавить</button>
-   <form action="" method="get">
-        {{ filterset.form.as_p }}
-        <input type="submit" value="Найти" />
-    </form>
-   <hr>
-   {% if cars %}
-       <table border="1" style="text-align:center">
+    <h1>Список машин</h1>
+    {% if user.is_authenticated %}
+        <button onclick=location.href="/cars/create"> Добавить</button>
+    {% endif %} 
+    <form action="" method="get">
+            {{ filterset.form.as_p }}
+            <input type="submit" value="Найти" />
+        </form>
+    <hr>
+    {% if cars %}
+        <table border="1" style="text-align:center">
            <tr>
-               <td><b>п/п</b></td>
-               <td><b>Зав. № машины</b></td>
-               <td><b>Модель техники</b></td>
-               <td><b>Модель двигателя</b></td>
-               <td><b>Зав. № двигателя</b></td>
-               <td><b>Модель трансмиссии</b></td>
-               <td><b>Зав. № трансмиссии</b></td>
-               <td><b>Модель ведущего моста</b></td>
-               <td><b>Зав. № ведущего моста</b></td>
-               <td><b>Модель управляемого моста</b></td>
-               <td><b>Зав. № управляемого моста</b></td>
-               <td><b>Договор поставки №, дата.</b></td>
-               <td><b>Дата отгрузки с завода</b></td>
-               <td><b>Грузополучатель (конечный потребитель)</b></td>
-               <td><b>Адрес поставки (эксплуатации)</b></td>
-               <td><b>Комплектация (доп. опции)</b></td>
-               <td><b>Клиент</b></td>
-               <td><b>Сервисная организация</b></td>
-               <td><b>Операции</b></td>
+                <td><b>п/п</b></td>
+                <td><b>Зав. № машины</b></td>
+                <td><b>Модель техники</b></td>
+                <td><b>Модель двигателя</b></td>
+                <td><b>Зав. № двигателя</b></td>
+                <td><b>Модель трансмиссии</b></td>
+                <td><b>Зав. № трансмиссии</b></td>
+                <td><b>Модель ведущего моста</b></td>
+                <td><b>Зав. № ведущего моста</b></td>
+                <td><b>Модель управляемого моста</b></td>
+                <td><b>Зав. № управляемого моста</b></td>
+                {% if user.is_authenticated %}
+                    <td><b>Договор поставки №, дата.</b></td>
+                    <td><b>Дата отгрузки с завода</b></td>
+                    <td><b>Грузополучатель (конечный потребитель)</b></td>
+                    <td><b>Адрес поставки (эксплуатации)</b></td>
+                    <td><b>Комплектация (доп. опции)</b></td>
+                    <td><b>Клиент</b></td>
+                    <td><b>Сервисная организация</b></td>
+                    <td><b>Операции</b></td>
+                {% endif %}    
 
            </tr>
            {% for car in cars %}
@@ -50,40 +54,42 @@ cars
                 <td><b>{{ car.drive_axle_number }}</b></td>
                 <td><b><a href="dictionary/steerableAxleModel/{{car.steerable_axle_model.id}}/">{{ car.steerable_axle_model }}</a></b></td>
                 <td><b>{{ car.steerable_axle_number }}</b></td>
-                <td><b>{{ car.supply_contract }}</b></td>
-                <td><b>{{ car.shipping_date }}</b></td>
-                <td><b>{{ car.consignee }}</b></td>
-                <td><b>{{ car.delivery_address }}</b></td>
-                <td><b>{{ car.equipment }}</b></td>
-                <td><b>{{ car.client }}</b></td>
-                <td><b><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></b></td>
-                <td><button onclick=location.href="/cars/edit/{{car.id}}">Изменить</button></td>
+                {% if user.is_authenticated %}
+                    <td><b>{{ car.supply_contract }}</b></td>
+                    <td><b>{{ car.shipping_date }}</b></td>
+                    <td><b>{{ car.consignee }}</b></td>
+                    <td><b>{{ car.delivery_address }}</b></td>
+                    <td><b>{{ car.equipment }}</b></td>
+                    <td><b>{{ car.client }}</b></td>
+                    <td><b><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></b></td>
+                    <td><button onclick=location.href="/cars/edit/{{car.id}}">Изменить</button></td>
+                {% endif %}                    
            </tr>
            {% endfor %}
 
-       </table>
-   {% else %}
-       <h2>машин нет!</h2>
-   {% endif %}
+        </table>
+    {% else %}
+        <h2>машин нет!</h2>
+    {% endif %}
 
-   {% if page_obj.has_previous %}
-       <a href="?page=1">1</a>
-       {% if page_obj.previous_page_number != 1 %}
-           ...
-           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-       {% endif %}
-   {% endif %}
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
 
-   {# Информация о текущей странице #}
-   {{ page_obj.number }}
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
 
-   {# Информация о следующих страницах #}
-   {% if page_obj.has_next %}
-       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-       {% if paginator.num_pages != page_obj.next_page_number %}
-           ...
-           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-       {% endif %}
-   {% endif %}
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
 
 {% endblock content %}

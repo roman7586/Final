@@ -130,7 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/accounts/login/' # Авторизация через allauth
 LOGIN_REDIRECT_URL = '/cars/' # перенаправление на страницу для авторизованного пользователя
-ACCOUNT_LOGOUT_REDIRECT_URL ="/accounts/login/" #перенаправление на страницу авторизации после выхода их профиля
+ACCOUNT_LOGOUT_REDIRECT_URL ="/cars/" #перенаправление на страницу авторизации после выхода их профиля
 
 SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
