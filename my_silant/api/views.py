@@ -15,15 +15,3 @@ class MaintenanceViewSet(viewsets.ModelViewSet):
 class ComplaintsViewSet(viewsets.ModelViewSet):
     queryset = Complaints.objects.all().order_by('date_of_refusal')
     serializer_class = ComplaintsSerializer
-
-# class TechniqueModelViewSet(viewsets.ModelViewSet):
-#     queryset = Technique_model.objects.all()
-#     serializer_class = TechniqueModelSerializer
-
-# class MaintenanceViewSet(viewsets.ModelViewSet):
-#     queryset = Maintenance.objects.all().order_by('maintenance_date')
-#     serializer_class = MaintenanceSerializer
-
-# class ComplaintsViewSet(viewsets.ModelViewSet):
-#     queryset = Complaints.objects.all().order_by('date_of_refusal')
-#     serializer_class = ComplaintsSerializer
