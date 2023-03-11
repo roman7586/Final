@@ -47,23 +47,29 @@ class CarEdit(PermissionRequiredMixin, UpdateView):
 def cardirectory (request, id, type): #Функция по форме отображения каждого справочника Модель 
 
     if type == "techniqueModel":
+        namegroup = 'Модель техники'
         item = Technique_model.objects.get(id=id)
     else:
         if type == "engineModel":
+            namegroup = 'Модель двигателя'
             item = Engine_model.objects.get(id=id)
         else:
             if type == "transmissionModel":
+                namegroup = 'Модель трансмиссии'
                 item = Transmission_model.objects.get(id=id)
             else:
                 if type == "driveAxleModel":
+                    namegroup = 'Модель техники'
                     item = Drive_axle_model.objects.get(id=id)
                 else:
                     if type == "steerableAxleModel":
+                        namegroup = 'Модель техники'
                         item = Steerable_axle_model.objects.get(id=id)
                     else:
                         if type == "ServiceCompany":
+                            namegroup = 'Модель техники'
                             item = Service_company.objects.get(id=id)
-    return render(request, 'dictionary.html', {'item': item})
+    return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup})
 
 def maintenancedirectory (request, id, type):
 
