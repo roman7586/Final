@@ -103,23 +103,17 @@ class CarList(ListView): #Общий список машин
 
 
     def get_queryset(self):
-       # Получаем обычный запрос
         queryset = super().get_queryset()
         if self.request.user.is_authenticated:
             self.filterset = CarFilter(self.request.GET, queryset)
         else:
+            if not bool(self.request.GET):
+                queryset = Car.objects.none()
             self.filterset = CarFilterNoAut(self.request.GET, queryset)          
-       # Используем наш класс фильтрации.
-       # self.request.GET содержит объект QueryDict, который мы рассматривали
-       # в этом юните ранее.
-       # Сохраняем нашу фильтрацию в объекте класса,
-       # чтобы потом добавить в контекст и использовать в шаблоне.
-       # Возвращаем из функции отфильтрованный список товаров
         return self.filterset.qs
       
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-       # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
         return context
     

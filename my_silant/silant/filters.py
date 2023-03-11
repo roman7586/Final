@@ -18,7 +18,8 @@ class CarFilterNoAut(FilterSet):
        model = Car
 
        fields = {
-           'serial_number': ['icontains']}
+           'serial_number': ['icontains']
+           }
        
 class MaintenanceFilter(FilterSet):
    class Meta:
