@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 class Base_dictionary(models.Model):
     name = models.TextField(unique=True, verbose_name='Название')
     description = models.TextField(blank=True, verbose_name='Описание')
@@ -76,6 +78,11 @@ class Car(models.Model):
         verbose_name = 'Машины'
         verbose_name_plural = 'Машины'
         ordering = ['shipping_date']
+        permissions = ( #Право для просмотра списка машин других пользователей  
+            ('view_car_noclient', 'Can view no client'),
+        )    
+        
+        
 
 class Type_maintenance(Base_dictionary):
 
