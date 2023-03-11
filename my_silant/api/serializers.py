@@ -1,48 +1,91 @@
-from silant.models import Car, Maintenance, Complaints, Technique_model
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 class TechniqueModelSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
-    # engine_model = models.ForeignKey(Engine_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель двигателя')
-    # engine_number = models.TextField(max_length=30, verbose_name='Зав. № двигателя')
-    # transmission_model = models.ForeignKey(Transmission_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель трансмиссии')
-    # transmission_number = models.TextField(max_length=50, verbose_name='Зав. № трансмиссии')
-    # drive_axle_model = models.ForeignKey(Drive_axle_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель ведущего моста')
-    # drive_axle_number = models.TextField(max_length=50, verbose_name='Зав. № ведущего моста')
-    # steerable_axle_model = models.ForeignKey(Steerable_axle_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель управляемого моста')
-    # steerable_axle_number = models.TextField(max_length=50, verbose_name='Зав. № управляемого моста')
-    # supply_contract = models.TextField(max_length=50, blank=True, verbose_name='Договор поставки №, дата.')
-    # shipping_date = models.DateField(db_index=True, verbose_name='Дата отгрузки с завода')
-    # consignee = models.TextField(max_length=50, blank=True, verbose_name='Грузополучатель (конечный потребитель)')
-    # delivery_address = models.TextField(max_length=150, blank=True, verbose_name='Адрес поставки (эксплуатации)')
-    # equipment = models.TextField(max_length=150, blank=True, verbose_name='Комплектация (доп. опции)')
-    # client = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Клиент')
-    # service_company = models.ForeignKey(Service_company, on_delete=models.CASCADE, blank=True, verbose_name='Сервисная организация')
 
+class EngineModelSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class TransmissionModelSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class DriveAxleModelSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class SteerableAxleModelSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "groups", "username"]
+
+class ServiceCompanySerializer(serializers.Serializer):
+    user = UserSerializer()
+    name = serializers.CharField()
+    description = serializers.CharField()
 
 class CarSerializer(serializers.Serializer):
-    serial_number = serializers.CharField()
-    technique_model = TechniqueModelSerializer() #models.ForeignKey(Technique_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель техники')
+    serial_number = serializers.CharField() #Серийный номер
+    technique_model = TechniqueModelSerializer() #Модель техники
+    engine_model = EngineModelSerializer() #Модель двигателя
+    engine_number = serializers.CharField() #Зав. № двигателя
+    transmission_model = TransmissionModelSerializer() #Модель трансмиссии
+    transmission_number = serializers.CharField() #Зав. № трансмиссии
+    drive_axle_model = DriveAxleModelSerializer() #Модель ведущего моста
+    drive_axle_number = serializers.CharField() #Зав. № ведущего моста
+    steerable_axle_model = SteerableAxleModelSerializer #Модель управляемого моста
+    steerable_axle_number = serializers.CharField() #Зав. № управляемого моста
+    supply_contract = serializers.CharField() #Договор поставки №, дата
+    shipping_date = serializers.DateField() #Дата отгрузки с завода
+    consignee = serializers.CharField() #Грузополучатель (конечный потребитель)
+    delivery_address = serializers.CharField() #Адрес поставки (эксплуатации)
+    equipment = serializers.CharField() #Комплектация (доп. опции)
+    client = UserSerializer() #Клиент
+    service_company = ServiceCompanySerializer() #Сервисная организация
 
 
+class TypeMaintenanceSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
 
-# class CarSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Car
-#         fields = ('serial_number', 'shipping_date', 'technique_model') #'__all__'
+class OrganizationMaintenanceSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
 
-# class Technique_modelSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Technique_model
-#         fields = '__all__'
+class MaintenanceSerializer(serializers.Serializer):
+    type_maintenance = OrganizationMaintenanceSerializer() #Вид ТО
+    maintenance_date = serializers.DateField() #Дата проведения ТО
+    operating_time = serializers.IntegerField() #Наработка м/час
+    work_order = serializers.CharField() #№ заказа-наряда
+    date_work_order = serializers.DateField() #Дата заказа-наряда
+    organization_maintenance = OrganizationMaintenanceSerializer() #Организация, проводившая ТО
+    car = CarSerializer() #Машина
+    service_company = ServiceCompanySerializer() #Сервисная организация
 
-# class MaintenanceSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Maintenance
-#         fields = '__all__'
 
-# class ComplaintsSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Complaints
-#         fields = '__all__'
+class FailureNodeSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class RecoveryMethodSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField()
+
+class ComplaintsSerializer(serializers.Serializer):
+    date_of_refusal = serializers.DateField() #Дата отказа
+    operating_time = serializers.IntegerField() #Наработка м/час
+    failure_node = FailureNodeSerializer #Узел отказа 
+    description_failure = serializers.CharField() #Характер отказа
+    recovery_method = RecoveryMethodSerializer() #Способ восстановления
+    parts_used = serializers.CharField() #Используемые запасные части
+    date_of_restoration = serializers.DateField() #Дата восстановления 
+    equipment_downtime = serializers.IntegerField() #Время простоя техники
+    car = CarSerializer() #Машина
+    service_company = ServiceCompanySerializer() #Сервисная организация
