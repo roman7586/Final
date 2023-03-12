@@ -112,7 +112,7 @@ class CarList(ListView): #Общий список машин
         queryset = super().get_queryset()
         if self.request.user.is_authenticated:
             if self.request.user.has_perm('silant.view_car_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
-                queryset = Car.objects.filter(client=self.request.user)
+                queryset = Car.objects.filter(client__user=self.request.user)
             self.filterset = CarFilter(self.request.GET, queryset)
         else:
             if not bool(self.request.GET):

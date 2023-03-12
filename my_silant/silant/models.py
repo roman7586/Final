@@ -52,6 +52,13 @@ class Service_company(Base_dictionary):
         verbose_name = 'Сервисная компания'
         verbose_name_plural = 'Сервисные компании'
 
+class Client(Base_dictionary):
+    class Meta:
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Имя пользователя')
+    
 class Car(models.Model):
     serial_number = models.TextField(max_length=30, unique=True, db_index=True, verbose_name='Зав. № машины')
     technique_model = models.ForeignKey(Technique_model, on_delete=models.CASCADE, db_index=True, verbose_name='Модель техники')
@@ -68,7 +75,7 @@ class Car(models.Model):
     consignee = models.TextField(max_length=50, blank=True, verbose_name='Грузополучатель (конечный потребитель)')
     delivery_address = models.TextField(max_length=150, blank=True, verbose_name='Адрес поставки (эксплуатации)')
     equipment = models.TextField(max_length=150, blank=True, verbose_name='Комплектация (доп. опции)')
-    client = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Клиент')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Клиент')
     service_company = models.ForeignKey(Service_company, on_delete=models.CASCADE, blank=True, verbose_name='Сервисная организация')
 
     def __str__(self):
