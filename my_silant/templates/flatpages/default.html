@@ -7,13 +7,103 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <link rel="shortcut icon" href=/static/img/LogotypeTitle.jpg>
         <title>Приложение СИЛАНТ </title>
 
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
+        <div class="wrapper">
+            <header class="p-3 bg-dark text-white">
+                <div class="container">
+                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                        </a>
+                
+                        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                            <li><img width="45px" height="45px" src="/static/img/LogotypeHeader.jpg"></li>
+                            <li><a href="#" class="nav-link px-2 text-secondary">СИЛАНТ</a></li>
+                            <li><a href="tel:88352201209" class="nav-link px-2 text-white">+7-8352-20-12-09</a></li>
+                            <li><a href="https://t.me/chzsa21" class="nav-link px-2 text-white">telegram</a></li>
+                        </ul>
+
+                        <div class="text-end">
+                            {% if user.is_authenticated %}
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="btn btn-outline-light me-2" href="/accounts/logout/">Выйти</a>
+                                    </li>
+                                </ul>
+                            Вошли как {{request.user.username}}
+                            {% else %}
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="btn btn-outline-light me-2" href="/accounts/login/">Войти</a>
+                                    </li>
+                                </ul>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <h3>Электронная сервисная книжка "Мой Силант"</h3>
+                    </div>                    
+                </div>
+            </header>
+            <!-- <header class="p-3 bg-dark text-white">
+                <div class="container">
+                    <a class="navbar-brand" href="/">СИЛАНТ</a>
+                    <a class="navbar-brand" href="/">+7-8352-20-12-09</a>
+                    <a class="navbar-brand" href="/">telegram</a>
+                    {% if user.is_authenticated %}
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout/">Выйти</a>
+                            </li>
+                        </ul>
+                        <a class="nav-link" href="/accounts/email/">Вошли как {{request.user.username}}</a>
+                    {% else %}
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login/">Войти</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    <p class="col-lg-12 text-center" >Электронная сервисная книжка "Мой Силант"</p>
+                </div>
+                
+            </header> -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        {% block content %}
+                        {{ flatpage.content }}
+                        {% endblock content %}
+                    </div>
+                </div>
+             </div>
+             <div class="container">
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                  <p class="col-md-4 mb-0 text-muted">© 2022 МОЙ СИЛАНТ</p>
+              
+                  <!-- <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>  КАРТИНКА
+                  </a> -->
+              
+                  <ul class="nav col-md-4 justify-content-end">
+                    <li class="nav-item"><a href="tel:88352201209" class="nav-link px-2 text-muted">+7-8352-20-12-09</a></li>
+                    <li class="nav-item"><a href="https://t.me/chzsa21" class="nav-link px-2 text-muted">telegram</a></li>
+                  </ul>
+                </footer>
+              </div>
+        </div>
+
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
                 <a class="navbar-brand" href="/">СИЛАНТ</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -25,7 +115,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/">Админам</a>
+                            <a class="nav-link" href="/admin/">телефон</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/cars/">Машины</a>
@@ -58,16 +148,7 @@
                     {% endif %}
                 </div>
             </div>
-        </nav>
+        </nav> -->
         <!-- Page content-->
-        <div class="container">
-           <div class="row">
-               <div class="col-lg-12 text-center">
-                   {% block content %}
-                   {{ flatpage.content }}
-                   {% endblock content %}
-               </div>
-           </div>
-</div>
     </body>
 </html>
