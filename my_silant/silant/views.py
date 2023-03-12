@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from .filters import CarFilter,CarFilterNoAut, ComplaintsFilter, MaintenanceFilter
 from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -130,7 +130,12 @@ class CarList(ListView): #Общий список машин
     
 def dictionaries (request):
     return render(request, 'dictionaries.html')
-    
+
+
+class CarDetail(DetailView):
+    model = Car
+    template_name = 'CarDetail.html'
+    context_object_name = 'car'
 
 class MaintenanceList(PermissionRequiredMixin, ListView): #Общий список ТО
     model = Maintenance

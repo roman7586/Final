@@ -48,6 +48,7 @@ class ComplaintsFilter(FilterSet):
     failure_node = ModelChoiceFilter(queryset=Failure_node.objects.all(), field_name='failure_node',label='Узел отказа', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     recovery_method = ModelChoiceFilter(queryset=Recovery_method.objects.all(), field_name='recovery_method',label='Способ восстановления', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     service_company = ModelChoiceFilter(queryset=Service_company.objects.all(), field_name='service_company',label='Сервисная организация', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))   
+    car = ModelChoiceFilter(queryset=Car.objects.all(), field_name='car',label='Серийный номер Машины', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     # class Meta:
     #     model = Complaints
 

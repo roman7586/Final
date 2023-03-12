@@ -1,0 +1,88 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+
+{% block title %}
+cars
+{% endblock title %}
+
+{% block content %}
+    <h1>Просмотр информации о машине с серийным номером № {{ car.serial_number  }}</h1>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/">Общая информация</a>
+          </div>
+          <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/maintenances/?type_maintenance=&service_company=&car={{car.id}}">ТО по машине</a>
+          </div>
+          <div class="col">
+            <a class="btn btn-silant-blue" href="complaints/?type_maintenance=&service_company=&car={{car.id}}">Рекламации по машине</a>
+          </div>
+        </div>
+    </div>
+    <div>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/maintenances/create/">Создать ТО</a>
+          </div>
+          <div class="col">
+            <a class="btn btn-silant-blue" href="complaints/create/">Создать Рекламацию</a>
+          </div>
+        </div>
+    </div>
+      
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Зав. № машины</th>
+                <th scope="col">Модель техники</th>
+                <th scope="col">Модель двигателя</th>
+                <th scope="col">Зав. № двигателя</th>
+                <th scope="col">Модель трансмиссии</th>
+                <th scope="col">Зав. № трансмиссии</th>
+                <th scope="col">Модель ведущего моста</th>
+                <th scope="col">Зав. № ведущего моста</th>
+                <th scope="col">Модель управляемого моста</th>
+                <th scope="col">Зав. № управляемого моста</th>
+                <th scope="col">Договор поставки №, дата.</th>
+                <th scope="col">Дата отгрузки с завода</th>
+                <th scope="col">Грузополучатель (конечный потребитель)</th>
+                <th scope="col">Адрес поставки (эксплуатации)</th>
+                <th scope="col">Комплектация (доп. опции)</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Сервисная организация</th>
+                <th scope="col">Операции</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ car.serial_number }}</td>
+                <td><a href="dictionary/techniqueModel/{{car.technique_model.id}}/">{{ car.technique_model }}</a></td>
+                <td><a href="dictionary/engineModel/{{car.engine_model.id}}/">{{ car.engine_model }}</a></td>
+                <td>{{ car.engine_number }}</td>
+                <td><a href="dictionary/transmissionModel/{{car.transmission_model.id}}/">{{ car.transmission_model }}</a></td>
+                <td>{{ car.transmission_number }}</td>
+                <td><a href="dictionary/driveAxleModel/{{car.drive_axle_model.id}}/">{{ car.drive_axle_model }}</a></td>
+                <td>{{ car.drive_axle_number }}</td>
+                <td><a href="dictionary/steerableAxleModel/{{car.steerable_axle_model.id}}/">{{ car.steerable_axle_model }}</a></td>
+                <td>{{ car.steerable_axle_number }}</td>
+                <td>{{ car.supply_contract }}</td>
+                <td>{{ car.shipping_date }}</td>
+                <td>{{ car.consignee }}</td>
+                <td>{{ car.delivery_address }}</td>
+                <td>{{ car.equipment }}</td>
+                <td>{{ car.client }}</td>
+                <td><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></td>
+                <td>                 
+                    {% if perms.silant.add_maintenance %} <!--Проверка авторизован b емеет право-->
+                        <a class="btn btn-silant-blue" href="/cars/maintenances/create/">Создать ТО</a>
+                    {% endif %}
+                    {% if perms.silant.add_complaints %} <!--Проверка авторизован b емеет право-->
+                        <a class="btn btn-silant-blue" href="complaints/create/">Создать Рекламацию</a>
+                    {% endif %} 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% endblock content %}
