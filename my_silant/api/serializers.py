@@ -26,6 +26,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "groups", "username"]
 
+class ClientSerializer(serializers.Serializer):
+    user = UserSerializer()
+    name = serializers.CharField()
+    description = serializers.CharField()
+
 class ServiceCompanySerializer(serializers.Serializer):
     user = UserSerializer()
     name = serializers.CharField()
@@ -47,7 +52,7 @@ class CarSerializer(serializers.Serializer):
     consignee = serializers.CharField() #Грузополучатель (конечный потребитель)
     delivery_address = serializers.CharField() #Адрес поставки (эксплуатации)
     equipment = serializers.CharField() #Комплектация (доп. опции)
-    client = UserSerializer() #Клиент
+    client = ClientSerializer() #Клиент
     service_company = ServiceCompanySerializer() #Сервисная организация
 
 
