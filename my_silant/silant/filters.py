@@ -28,7 +28,7 @@ class MaintenanceFilter(FilterSet):
        fields = {
             'type_maintenance__name': ['icontains'],
             'service_company__name': ['icontains'],
-            'car__serial_number': ['icontains'] #надо проверить, думаю не сработает
+            'car__serial_number': ['icontains'] 
             }
        
 class ComplaintsFilter(FilterSet):

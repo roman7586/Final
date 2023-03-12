@@ -138,9 +138,14 @@ class MaintenanceList(PermissionRequiredMixin, ListView): #Общий списо
     paginate_by = 10
 
     def get_queryset(self):
-       # Получаем обычный запрос
         queryset = super().get_queryset()
-        self.filterset = MaintenanceFilter(self.request.GET, queryset)
+        if self.request.user.is_authenticated:
+            if self.request.user.has_perm('silant.view_maintenance_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
+                queryset = Maintenance.objects.filter(car__client__user=self.request.user)
+            self.filterset = MaintenanceFilter(self.request.GET, queryset)
+        else:
+            if not bool(self.request.GET):
+                queryset = Maintenance.objects.none()
         return self.filterset.qs
       
     def get_context_data(self, **kwargs):
@@ -193,9 +198,15 @@ class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
     paginate_by = 10
 
     def get_queryset(self):
-       # Получаем обычный запрос
         queryset = super().get_queryset()
-        self.filterset = ComplaintsFilter(self.request.GET, queryset)
+
+        if self.request.user.is_authenticated:
+            if self.request.user.has_perm('silant.view_complaints_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
+                queryset = Complaints.objects.filter(car__client__user=self.request.user)
+            self.filterset = ComplaintsFilter(self.request.GET, queryset)
+        else:
+            if not bool(self.request.GET):
+                queryset = Complaints.objects.none()
         return self.filterset.qs
       
     def get_context_data(self, **kwargs):

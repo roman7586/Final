@@ -121,7 +121,9 @@ class Maintenance(models.Model):
         verbose_name = 'ТО'
         verbose_name_plural = 'ТО'      
         ordering = ['maintenance_date']
-
+        permissions = ( #Право для просмотра списка ТО других пользователей  
+            ('view_maintenance_noclient', 'maintenance view no client'),
+        )
 
 
 class Failure_node(Base_dictionary):
@@ -156,6 +158,9 @@ class Complaints(models.Model):
         verbose_name = 'Рекламации'
         verbose_name_plural = 'Рекламации'
         ordering = ['date_of_refusal']
+        permissions = ( #Право для просмотра списка рекламаций других пользователей  
+            ('view_complaints_noclient', 'complaints view no client'),
+        )
 
 
     def save(self, *args, **kwargs):
