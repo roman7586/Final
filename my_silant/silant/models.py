@@ -87,6 +87,7 @@ class Car(models.Model):
         ordering = ['shipping_date']
         permissions = ( #Право для просмотра списка машин других пользователей  
             ('view_car_noclient', 'Can view no client'),
+            ('view_car_noservice', 'Can view no service')
         )    
         
         
@@ -123,6 +124,7 @@ class Maintenance(models.Model):
         ordering = ['maintenance_date']
         permissions = ( #Право для просмотра списка ТО других пользователей  
             ('view_maintenance_noclient', 'maintenance view no client'),
+            ('view_maintenance_noservice', 'Can view no service')
         )
 
 
@@ -160,6 +162,7 @@ class Complaints(models.Model):
         ordering = ['date_of_refusal']
         permissions = ( #Право для просмотра списка рекламаций других пользователей  
             ('view_complaints_noclient', 'complaints view no client'),
+            ('view_complaints_noservice', 'Can view no service')
         )
 
 

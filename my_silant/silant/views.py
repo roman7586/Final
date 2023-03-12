@@ -113,6 +113,9 @@ class CarList(ListView): #Общий список машин
         if self.request.user.is_authenticated:
             if self.request.user.has_perm('silant.view_car_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
                 queryset = Car.objects.filter(client__user=self.request.user)
+            else:
+                if self.request.user.has_perm('silant.view_car_noservice') == False:
+                    queryset = Car.objects.filter(service_company__user=self.request.user)
             self.filterset = CarFilter(self.request.GET, queryset)
         else:
             if not bool(self.request.GET):
@@ -142,6 +145,9 @@ class MaintenanceList(PermissionRequiredMixin, ListView): #Общий списо
         if self.request.user.is_authenticated:
             if self.request.user.has_perm('silant.view_maintenance_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
                 queryset = Maintenance.objects.filter(car__client__user=self.request.user)
+            else:
+                if self.request.user.has_perm('silant.view_maintenance_noservice') == False:
+                    queryset = Maintenance.objects.filter(service_company__user=self.request.user)
             self.filterset = MaintenanceFilter(self.request.GET, queryset)
         else:
             if not bool(self.request.GET):
@@ -181,12 +187,6 @@ class MaintenanceEdit(PermissionRequiredMixin, UpdateView):
          self.object.user = self.request.user
          self.object.save()
          return redirect(self.get_success_url())
-    
-#     def form_valid(self, form):
-#         self.object = form.save(commit=False)
-#         self.object.user = self.request.user
-#         self.object.save()
-#         return HttpResponseRedirect(self.get_success_url())          
 
 #РЕКЛАМАЦИИ
 class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
@@ -203,6 +203,9 @@ class ComplaintsList(LoginRequiredMixin, ListView): #Общий список
         if self.request.user.is_authenticated:
             if self.request.user.has_perm('silant.view_complaints_noclient') == False: # авторизованный пользователь не имеет право просмотра всех записей машин
                 queryset = Complaints.objects.filter(car__client__user=self.request.user)
+            else:
+                if self.request.user.has_perm('silant.view_complaints_noservice') == False:
+                    queryset = Complaints.objects.filter(service_company__user=self.request.user)
             self.filterset = ComplaintsFilter(self.request.GET, queryset)
         else:
             if not bool(self.request.GET):
