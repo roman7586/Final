@@ -7,16 +7,14 @@ complaint
 
 {% block content %}
    <h1>Рекламации</h1>
-   <button onclick=location.href="/cars/complaints/create"> Добавить</button>
    <form action="" method="get">
         {{ filterset.form.as_p }}
-        <input type="submit" value="Найти" />
+        <input class="btn btn-silant-blue" type="submit" value="Найти" />
     </form>
    <hr>
    {% if complaints %}
        <table border="1" style="text-align:center">
            <tr>
-               <td><b>п/п</b></td>
                <td><b>Дата отказа</b></td>
                <td><b>Наработка м/час</b></td>
                <td><b>Узел отказа</b></td>
@@ -31,7 +29,6 @@ complaint
            </tr>
            {% for complaint in complaints %}
            <tr>
-                <td><b>{{ complaint.id }}</b></td>
                 <td><b>{{ complaint.date_of_refusal }}</b></td>
                 <td><b>{{ complaint.operating_time }}</b></td>
                 <td><b><a href="dictionary/failureNode/{{complaint.failure_node.id}}/">{{ complaint.failure_node }}</a></b></td>
@@ -42,7 +39,12 @@ complaint
                 <td><b>{{ complaint.equipment_downtime }}</b></td>
                 <td><b>{{ complaint.car }}</b></td>
                 <td><b><a href="dictionary/serviceCompany/{{complaint.service_company.id}}/">{{ complaint.service_company }}</a></b></td>
-                <td><button onclick=location.href="/cars/complaints/edit/{{complaint.id}}">Изменить</button></td>
+                <td>
+                    <a class="btn btn-silant-blue" href="/cars/complaints/info">Подробнее</a>
+                    {% if perms.silant.change_car %} <!--Проверка авторизован b емеет право-->
+                        <a class="btn btn-silant-blue" href="/cars/complaints/edit/{{complaint.id}}">Изменить</a>
+                    {% endif %} 
+                </td>
            </tr>
            {% endfor %}
 
@@ -70,5 +72,10 @@ complaint
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
+    <div>
+    {% if user.is_authenticated and perms.silant.add_complaints %} <!--Проверка авторизован ли, И емеет право на добавление-->
+        <a class="btn btn-silant-blue" href="/cars/complaints/create">Добавить рекламацию</a>
+    {% endif %} 
+    </div>
 
 {% endblock content %}

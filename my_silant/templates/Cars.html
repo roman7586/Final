@@ -60,7 +60,12 @@ cars
                             <td>{{ car.equipment }}</td>
                             <td>{{ car.client }}</td>
                             <td><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></td>
-                            <td><button onclick=location.href="/cars/edit/{{car.id}}">Изменить</button></td>
+                            <td>
+                                <a class="btn btn-silant-blue" href="/cars/info">Подробнее</a>
+                                {% if perms.silant.change_car %} <!--Проверка авторизован b емеет право-->
+                                    <a class="btn btn-silant-blue" href="/cars/edit/{{car.id}}">Изменить</a>
+                                {% endif %} 
+                            </td>
                         {% endif %}                    
                 </tr>
                 {% endfor %}

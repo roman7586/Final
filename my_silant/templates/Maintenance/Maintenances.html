@@ -6,65 +6,70 @@ maintenances
 {% endblock title %}
 
 {% block content %}
-   <h1>Техническое обслуживание</h1>
-   <button onclick=location.href="/cars/maintenances/create"> Добавить</button>
-   <form action="" method="get">
-        {{ filterset.form.as_p }}
-        <input type="submit" value="Найти" />
-    </form>
-   <hr>
-   {% if maintenances %}
-       <table border="1" style="text-align:center">
-           <tr>
-               <td><b>п/п</b></td>
-               <td><b>Вид ТО</b></td>
-               <td><b>Дата проведения ТО</b></td>
-               <td><b>Наработка м/час</b></td>
-               <td><b>№ заказа-наряда</b></td>
-               <td><b>Дата заказа-наряда</b></td>
-               <td><b>Организация, проводившая ТО</b></td>
-               <td><b>Машина</b></td>
-               <td><b>Сервисная организация</b></td>
-               <td><b>Операции</b></td>
-           </tr>
-           {% for maintenance in maintenances %}
-           <tr>
-                <td><b>{{ maintenance.id }}</b></td>
-                <td><b><a href="dictionary/typeMaintenance/{{maintenance.type_maintenance.id}}/">{{ maintenance.type_maintenance }}</a></b></td>
-                <td><b>{{ maintenance.maintenance_date }}</a></b></td>
-                <td><b>{{ maintenance.operating_time }}</a></b></td>
-                <td><b>{{ maintenance.work_order }}</b></td>
-                <td><b>{{ maintenance.date_work_order }}</a></b></td>
-                <td><b>{{ maintenance.organization_maintenance }}</b></td>
-                <td><b>{{ maintenance.car }}</a></b></td>
-                <td><b><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></b></td> <!--ошибка-->
-                <td><button onclick=location.href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</button></td>
-           </tr>
-           {% endfor %}
+    <h1>Техническое обслуживание</h1>
+    <form action="" method="get">
+            {{ filterset.form.as_p }}
+            <input class="btn btn-silant-blue" type="submit" value="Найти" />
+        </form>
+    <hr>
+    {% if maintenances %}
+        <table border="1" style="text-align:center">
+            <tr>
+                <td><b>Вид ТО</b></td>
+                <td><b>Дата проведения ТО</b></td>
+                <td><b>Наработка м/час</b></td>
+                <td><b>№ заказа-наряда</b></td>
+                <td><b>Дата заказа-наряда</b></td>
+                <td><b>Организация, проводившая ТО</b></td>
+                <td><b>Машина</b></td>
+                <td><b>Сервисная организация</b></td>
+                <td><b>Операции</b></td>
+            </tr>
+            {% for maintenance in maintenances %}
+            <tr>
+                    <td><b><a href="dictionary/typeMaintenance/{{maintenance.type_maintenance.id}}/">{{ maintenance.type_maintenance }}</a></b></td>
+                    <td><b>{{ maintenance.maintenance_date }}</a></b></td>
+                    <td><b>{{ maintenance.operating_time }}</a></b></td>
+                    <td><b>{{ maintenance.work_order }}</b></td>
+                    <td><b>{{ maintenance.date_work_order }}</a></b></td>
+                    <td><b>{{ maintenance.organization_maintenance }}</b></td>
+                    <td><b>{{ maintenance.car }}</a></b></td>
+                    <td><b><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></b></td> <!--ошибка-->
+                    <td>
+                        <a class="btn btn-silant-blue" href="/cars/maintenances/info">Подробнее</a>
+                        {% if perms.silant.change_car %} <!--Проверка авторизован и емеет право-->
+                            <a class="btn btn-silant-blue" href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</a>
+                        {% endif %} 
+            </tr>
+            {% endfor %}
 
-       </table>
-   {% else %}
-       <h2>Данных пока нет!</h2>
-   {% endif %}
+        </table>
+    {% else %}
+        <h2>Данных пока нет!</h2>
+    {% endif %}
 
-   {% if page_obj.has_previous %}
-       <a href="?page=1">1</a>
-       {% if page_obj.previous_page_number != 1 %}
-           ...
-           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-       {% endif %}
-   {% endif %}
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
 
-   {# Информация о текущей странице #}
-   {{ page_obj.number }}
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
 
-   {# Информация о следующих страницах #}
-   {% if page_obj.has_next %}
-       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-       {% if paginator.num_pages != page_obj.next_page_number %}
-           ...
-           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-       {% endif %}
-   {% endif %}
-
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+    <div>
+        {% if user.is_authenticated and perms.silant.add_maintenance %} <!--Проверка авторизован ли, И емеет право на добавление-->
+            <a class="btn btn-silant-blue" href="/cars/maintenances/create">Добавить ТО</a>
+        {% endif %} 
+    </div>
 {% endblock content %}
