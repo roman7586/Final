@@ -2,7 +2,38 @@
 
 {% block content %}
 <h1>{{namegroup}}</h1>
-<table class="table">
+
+<form action="/cars/dictionary/save/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="id" type="hidden" value="{{item.id}}">
+    <input name="type" type="hidden" value="{{type}}">     
+    <div>
+        <label>
+            Наименование
+        </label>
+        {% if perms.silant.add_car %}
+            <textarea name="name" maxlength="30" required="" id="id_name">{{ item.name }}</textarea>
+        {% else %}
+            <textarea name="name" maxlength="30" required="" id="id_name" disabled>{{ item.name }}</textarea>
+        {% endif %}
+    </div>
+    <div>
+        <label>
+            Описание
+        </label>
+        {% if perms.silant.add_car %}
+            <textarea name="description" maxlength="100" required="" id="id_description">{{ item.description }}</textarea>
+        {% else %}
+            <textarea name="description" maxlength="100" required="" id="id_description" disabled>{{ item.description }}</textarea>
+        {% endif %}
+    </div>
+    {% if perms.silant.add_car %}
+        <button type="submit">Сохранить</button>
+    {% endif %}
+ 
+</form>
+
+<!-- <table class="table">
     <thead>
         <tr>
             <th scope="col">Наименование</th>
@@ -15,6 +46,6 @@
             <td>{{ item.description }}</td>
         </tr>
     </tbody>
-    </table>
+</table> -->
 
 {% endblock content %}

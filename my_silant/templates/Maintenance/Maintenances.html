@@ -52,9 +52,9 @@ maintenances
                         <td>{{ maintenance.operating_time }}</a></td>
                         <td>{{ maintenance.work_order }}</td>
                         <td>{{ maintenance.date_work_order }}</a></td>
-                        <td>{{ maintenance.organization_maintenance }}</td>
+                        <td><a href="dictionary/organizationMaintenance/{{maintenance.organization_maintenance.id}}/">{{ maintenance.organization_maintenance }}</a></td>
                         <td>{{ maintenance.car }}</a></td>
-                        <td><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></td> <!--ошибка-->
+                        <td><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></td>
                         {% if perms.silant.change_maintenance %}
                             <td>
                                 <a class="btn btn-silant-blue" href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</a>

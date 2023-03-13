@@ -5,7 +5,7 @@ from .filters import CarFilter,CarFilterNoAut, ComplaintsFilter, MaintenanceFilt
 from .forms import CreateCarForm, CreateComplaintsForm, CreateMaintenanceForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from .models import Car, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
+from .models import Car, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Organization_maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
 
 
 class CarCreate(PermissionRequiredMixin, CreateView):
@@ -49,48 +49,48 @@ def cardirectory (request, id, type): #Функция по форме отобр
     if type == "techniqueModel":
         namegroup = 'Модель техники'
         item = Technique_model.objects.get(id=id)
-    else:
-        if type == "engineModel":
-            namegroup = 'Модель двигателя'
-            item = Engine_model.objects.get(id=id)
-        else:
-            if type == "transmissionModel":
-                namegroup = 'Модель трансмиссии'
-                item = Transmission_model.objects.get(id=id)
-            else:
-                if type == "driveAxleModel":
-                    namegroup = 'Модель техники'
-                    item = Drive_axle_model.objects.get(id=id)
-                else:
-                    if type == "steerableAxleModel":
-                        namegroup = 'Модель техники'
-                        item = Steerable_axle_model.objects.get(id=id)
-                    else:
-                        if type == "ServiceCompany":
-                            namegroup = 'Модель техники'
-                            item = Service_company.objects.get(id=id)
-    return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup})
+    elif type == "engineModel":
+        namegroup = 'Модель двигателя'
+        item = Engine_model.objects.get(id=id)
+    elif type == "transmissionModel":
+        namegroup = 'Модель трансмиссии'
+        item = Transmission_model.objects.get(id=id)
+    elif type == "driveAxleModel":
+        namegroup = 'Модель ведущего моста'
+        item = Drive_axle_model.objects.get(id=id)
+    elif type == "steerableAxleModel":
+        namegroup = 'Модель управляемого моста'
+        item = Steerable_axle_model.objects.get(id=id)
+    elif type == "ServiceCompany":
+        namegroup = 'Сервисная организация'
+        item = Service_company.objects.get(id=id)
+    return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup, 'type' : type})
 
 def maintenancedirectory (request, id, type):
 
     if type == "typeMaintenance":
+        namegroup = 'Вид ТО'    
         item = Type_maintenance.objects.get(id=id)
-    else:
-        if type == "serviceCompany":
-            item = Service_company.objects.get(id=id)
-    return render(request, 'dictionary.html', {'item': item})
+    elif type == "serviceCompany":
+        namegroup = 'Сервисная организация'
+        item = Service_company.objects.get(id=id)
+    elif type == "organizationMaintenance":
+        namegroup = 'Организация, проводившая ТО'
+        item = Organization_maintenance.objects.get(id=id) 
+    return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup, 'type' : type})
 
 def complaintdirectory (request, id, type):
 
     if type == "failureNode":
+        namegroup = 'Узел отказа'
         item = Failure_node.objects.get(id=id)
-    else:
-        if type == "recoveryMethod":
-            item = Recovery_method.objects.get(id=id)
-        else:
-            if type == "serviceCompany":
-                item = Service_company.objects.get(id=id)
-    return render(request, 'dictionary.html', {'item': item})
+    elif type == "recoveryMethod":
+        namegroup = 'Способ восстановления'
+        item = Recovery_method.objects.get(id=id)
+    elif type == "serviceCompany":
+        namegroup = 'Сервисная организация'
+        item = Service_company.objects.get(id=id)
+    return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup, 'type' : type})
                 
     
 #    form = Directory(request.POST)
@@ -249,4 +249,76 @@ class ComplaintsEdit(PermissionRequiredMixin, UpdateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return redirect(self.get_success_url())      
+        return redirect(self.get_success_url())
+
+
+def savedictionary(request): 
+    # form = NewsForm(request.POST)
+    print(request.POST)
+    id = request.POST['id']
+    type = request.POST['type']
+    name = request.POST['name']
+    description = request.POST['description']
+    if type == "techniqueModel":
+        model = Technique_model.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Technique_model.save(model)
+    elif type == "engineModel":
+        model = Engine_model.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Engine_model.save(model)
+    elif type == "transmissionModel":
+        model = Transmission_model.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Transmission_model.save(model)
+    elif type == "driveAxleModel":
+        model = Drive_axle_model.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Drive_axle_model.save(model)
+    elif type == "steerableAxleModel":
+        model = Steerable_axle_model.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Steerable_axle_model.save(model)
+    elif type == "ServiceCompany":
+        model = Service_company.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Service_company.save(model)                    
+    elif type == "typeMaintenance":
+        model = Type_maintenance.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Type_maintenance.save(model)
+    elif type == "organizationMaintenance":
+        model = Organization_maintenance.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Organization_maintenance.save(model)
+    elif type == "failureNode":
+        model = Failure_node.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Failure_node.save(model)
+    elif type == "recoveryMethod":
+        model = Recovery_method.objects.get(id=id)
+        model.name = name
+        model.description = description
+        Recovery_method.save(model)      
+
+
+    # if form.is_valid():
+    #     form.save()
+    #     subject = form.cleaned_data.get('title')
+    #     text = form.cleaned_data.get('text')
+    #     mail_list = [mail for mail in User.objects.all().values_list('email', flat=True)[1:]]
+    #     send_mail(
+    #         f'{subject}',
+    #         f'{text}',
+    #         mail_list
+    #     )
+    return redirect('/')
