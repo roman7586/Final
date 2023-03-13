@@ -28,36 +28,41 @@ maintenances
         </form>
     <hr>
     {% if maintenances %}
-        <table border="1" style="text-align:center">
-            <tr>
-                <td><b>Вид ТО</b></td>
-                <td><b>Дата проведения ТО</b></td>
-                <td><b>Наработка м/час</b></td>
-                <td><b>№ заказа-наряда</b></td>
-                <td><b>Дата заказа-наряда</b></td>
-                <td><b>Организация, проводившая ТО</b></td>
-                <td><b>Машина</b></td>
-                <td><b>Сервисная организация</b></td>
-                <td><b>Операции</b></td>
-            </tr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Вид ТО</td>
+                    <th scope="col">Дата проведения ТО</td>
+                    <th scope="col">Наработка м/час</td>
+                    <th scope="col">№ заказа-наряда</td>
+                    <th scope="col">Дата заказа-наряда</td>
+                    <th scope="col">Организация, проводившая ТО</td>
+                    <th scope="col">Машина</td>
+                    <th scope="col">Сервисная организация</td>
+                    {% if perms.silant.change_maintenance %}         
+                        <th scope="col">Операции</td>
+                    {% endif %} 
+                </tr>
+            </thead>
             {% for maintenance in maintenances %}
-            <tr>
-                    <td><b><a href="dictionary/typeMaintenance/{{maintenance.type_maintenance.id}}/">{{ maintenance.type_maintenance }}</a></b></td>
-                    <td><b>{{ maintenance.maintenance_date }}</a></b></td>
-                    <td><b>{{ maintenance.operating_time }}</a></b></td>
-                    <td><b>{{ maintenance.work_order }}</b></td>
-                    <td><b>{{ maintenance.date_work_order }}</a></b></td>
-                    <td><b>{{ maintenance.organization_maintenance }}</b></td>
-                    <td><b>{{ maintenance.car }}</a></b></td>
-                    <td><b><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></b></td> <!--ошибка-->
-                    <td>
-                        <a class="btn btn-silant-blue" href="/cars/maintenances/info">Подробнее</a>
-                        {% if perms.silant.change_car %} <!--Проверка авторизован и емеет право-->
-                            <a class="btn btn-silant-blue" href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</a>
+                <tbody>
+                    <tr>
+                        <td><a href="dictionary/typeMaintenance/{{maintenance.type_maintenance.id}}/">{{ maintenance.type_maintenance }}</a></td>
+                        <td>{{ maintenance.maintenance_date }}</a></td>
+                        <td>{{ maintenance.operating_time }}</a></td>
+                        <td>{{ maintenance.work_order }}</td>
+                        <td>{{ maintenance.date_work_order }}</a></td>
+                        <td>{{ maintenance.organization_maintenance }}</td>
+                        <td>{{ maintenance.car }}</a></td>
+                        <td><a href="dictionary/serviceCompany/{{maintenance.service_company.id}}/">{{ maintenance.service_company }}</a></td> <!--ошибка-->
+                        {% if perms.silant.change_maintenance %}
+                            <td>
+                                <a class="btn btn-silant-blue" href="/cars/maintenances/edit/{{maintenance.id}}">Изменить</a>
+                            </td>
                         {% endif %} 
-            </tr>
+                    </tr>
+                </tbody>
             {% endfor %}
-
         </table>
     {% else %}
         <h2>Данных пока нет!</h2>
@@ -82,9 +87,13 @@ maintenances
             <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
         {% endif %}
     {% endif %}
-    <div>
-        {% if user.is_authenticated and perms.silant.add_maintenance %} <!--Проверка авторизован ли, И емеет право на добавление-->
-            <a class="btn btn-silant-blue" href="/cars/maintenances/create">Добавить ТО</a>
-        {% endif %} 
+    <div class="container">
+        <div class="row">
+            {% if perms.silant.add_maintenance %}
+                <div class="col">
+                    <a class="btn btn-silant-blue" href="/cars/maintenances/create/">Создать ТО</a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {% endblock content %}

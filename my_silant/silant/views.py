@@ -105,7 +105,7 @@ class CarList(ListView): #Общий список машин
     ordering = 'shipping_date'
     template_name = 'cars.html'
     context_object_name = 'cars'
-    paginate_by = 10
+    paginate_by = 5
 
 
     def get_queryset(self):

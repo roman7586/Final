@@ -13,25 +13,14 @@ cars
             <a class="btn btn-silant-blue" href="/cars/">Общая информация</a>
           </div>
           <div class="col">
-            <a class="btn btn-silant-blue" href="/cars/maintenances/?type_maintenance=&service_company=&car={{car.id}}">ТО по машине</a>
+            <a class="btn btn-silant-blue" href="/cars/maintenances/?type_maintenance=&service_company=&car={{car.id}}">ТО</a>
           </div>
           <div class="col">
-            <a class="btn btn-silant-blue" href="complaints/?type_maintenance=&service_company=&car={{car.id}}">Рекламации по машине</a>
+            <a class="btn btn-silant-blue" href="complaints/?type_maintenance=&service_company=&car={{car.id}}">Рекламации</a>
           </div>
         </div>
     </div>
     <div>
-    <div class="container">
-        <div class="row">
-          <div class="col">
-            <a class="btn btn-silant-blue" href="/cars/maintenances/create/">Создать ТО</a>
-          </div>
-          <div class="col">
-            <a class="btn btn-silant-blue" href="complaints/create/">Создать Рекламацию</a>
-          </div>
-        </div>
-    </div>
-      
     <table class="table">
         <thead>
             <tr>
@@ -52,7 +41,9 @@ cars
                 <th scope="col">Комплектация (доп. опции)</th>
                 <th scope="col">Клиент</th>
                 <th scope="col">Сервисная организация</th>
-                <th scope="col">Операции</th>
+                {% if perms.silant.change_car %}
+                  <th scope="col">Операции</th>
+                {% endif %} 
             </tr>
         </thead>
         <tbody>
@@ -74,14 +65,11 @@ cars
                 <td>{{ car.equipment }}</td>
                 <td>{{ car.client }}</td>
                 <td><a href="dictionary/ServiceCompany/{{car.service_company.id}}/">{{ car.service_company }}</a></td>
-                <td>                 
-                    {% if perms.silant.add_maintenance %} <!--Проверка авторизован b емеет право-->
-                        <a class="btn btn-silant-blue" href="/cars/maintenances/create/">Создать ТО</a>
-                    {% endif %}
-                    {% if perms.silant.add_complaints %} <!--Проверка авторизован b емеет право-->
-                        <a class="btn btn-silant-blue" href="complaints/create/">Создать Рекламацию</a>
-                    {% endif %} 
-                </td>
+                {% if perms.silant.change_car %}
+                  <td>                 
+                    <a class="btn btn-silant-blue" href="/cars/edit/{{car.id}}">Изменить</a>
+                  </td>
+                {% endif %}   
             </tr>
         </tbody>
     </table>

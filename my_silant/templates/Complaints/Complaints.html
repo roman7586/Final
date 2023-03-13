@@ -26,49 +26,53 @@ complaint
         {{ filterset.form.as_p }}
         <input class="btn btn-silant-blue" type="submit" value="Найти" />
     </form>
-   <hr>
-   {% if complaints %}
-       <table border="1" style="text-align:center">
-           <tr>
-               <td><b>Дата отказа</b></td>
-               <td><b>Наработка м/час</b></td>
-               <td><b>Узел отказа</b></td>
-               <td><b>Характер отказа</b></td>
-               <td><b>Способ восстановления</b></td>
-               <td><b>Используемые запасные части</b></td>
-               <td><b>Дата восстановления</b></td>
-               <td><b>Время простоя техники</b></td>
-               <td><b>Машина</b></td>
-               <td><b>Сервисная организация</b></td>
-               <td><b>Операции</b></td>
-           </tr>
-           {% for complaint in complaints %}
-           <tr>
-                <td><b>{{ complaint.date_of_refusal }}</b></td>
-                <td><b>{{ complaint.operating_time }}</b></td>
-                <td><b><a href="dictionary/failureNode/{{complaint.failure_node.id}}/">{{ complaint.failure_node }}</a></b></td>
-                <td><b>{{ complaint.description_failure }}</b></td>
-                <td><b><a href="dictionary/recoveryMethod/{{complaint.recovery_method.id}}/">{{ complaint.recovery_method }}</a></b></td>
-                <td><b>{{ complaint.parts_used }}</b></td>
-                <td><b>{{ complaint.date_of_restoration }}</b></td>
-                <td><b>{{ complaint.equipment_downtime }}</b></td>
-                <td><b>{{ complaint.car }}</b></td>
-                <td><b><a href="dictionary/serviceCompany/{{complaint.service_company.id}}/">{{ complaint.service_company }}</a></b></td>
-                <td>
-                    <a class="btn btn-silant-blue" href="/cars/complaints/info">Подробнее</a>
-                    {% if perms.silant.change_car %} <!--Проверка авторизован b емеет право-->
-                        <a class="btn btn-silant-blue" href="/cars/complaints/edit/{{complaint.id}}">Изменить</a>
-                    {% endif %} 
-                </td>
-           </tr>
-           {% endfor %}
+    <hr>
+    {% if complaints %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Дата отказа</th>
+                    <th scope="col">Наработка м/час</th>
+                    <th scope="col">Узел отказа</th>
+                    <th scope="col">Характер отказа</th>
+                    <th scope="col">Способ восстановления</th>
+                    <th scope="col">Используемые запасные части</th>
+                    <th scope="col">Дата восстановления</th>
+                    <th scope="col">Время простоя техники</th>
+                    <th scope="col">Машина</th>
+                    <th scope="col">Сервисная организация</th>
+                    {% if perms.silant.change_complaints %}
+                        <th scope="col">Операции</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            {% for complaint in complaints %}
+                <tbody>
+                    <tr>
+                        <td>{{ complaint.date_of_refusal }}</td>
+                        <td>{{ complaint.operating_time }}</td>
+                        <td><a href="dictionary/failureNode/{{complaint.failure_node.id}}/">{{ complaint.failure_node }}</a></td>
+                        <td>{{ complaint.description_failure }}</td>
+                        <td><a href="dictionary/recoveryMethod/{{complaint.recovery_method.id}}/">{{ complaint.recovery_method }}</a></td>
+                        <td>{{ complaint.parts_used }}</td>
+                        <td>{{ complaint.date_of_restoration }}</td>
+                        <td>{{ complaint.equipment_downtime }}</td>
+                        <td>{{ complaint.car }}</td>
+                        <td><a href="dictionary/serviceCompany/{{complaint.service_company.id}}/">{{ complaint.service_company }}</a></td>
+                        {% if perms.silant.change_complaints %}                        
+                            <td>
+                                <a class="btn btn-silant-blue" href="/cars/complaints/edit/{{complaint.id}}">Изменить</a>
+                            </td>
+                        {% endif %} 
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Данных пока нет!</h2>
+    {% endif %}
 
-       </table>
-   {% else %}
-       <h2>Данных пока нет!</h2>
-   {% endif %}
-
-   {% if page_obj.has_previous %}
+    {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
            ...
@@ -87,10 +91,14 @@ complaint
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
-    <div>
-    {% if user.is_authenticated and perms.silant.add_complaints %} <!--Проверка авторизован ли, И емеет право на добавление-->
-        <a class="btn btn-silant-blue" href="/cars/complaints/create">Добавить рекламацию</a>
-    {% endif %} 
+    <div class="container">
+        <div class="row">
+            {% if perms.silant.add_complaints %}
+                <div class="col">
+                    <a class="btn btn-silant-blue" href="complaints/create/">Создать Рекламацию</a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock content %}
