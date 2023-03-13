@@ -1,28 +1,33 @@
 
 from django import forms
-from .models import Car, Complaints, Maintenance
+from .models import Car, Client, Complaints, Drive_axle_model, Engine_model, Maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model
 from django.utils import timezone
 
 now = timezone.now()
 
 class CreateCarForm(forms.ModelForm):
+    technique_model = forms.ModelChoiceField(queryset=Technique_model.objects.all(), label='Модель техники', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    engine_model = forms.ModelChoiceField(queryset=Engine_model.objects.all(), label='Модель двигателя', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    transmission_model = forms.ModelChoiceField(queryset=Transmission_model.objects.all(), label='Модель трансмиссии', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    drive_axle_model = forms.ModelChoiceField(queryset=Drive_axle_model.objects.all(), label='Модель ведущего моста', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    steerable_axle_model = forms.ModelChoiceField(queryset=Steerable_axle_model.objects.all(), label='Модель управляемого моста', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    client = forms.ModelChoiceField(queryset=Client.objects.all(), label='Клиент', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    service_company = forms.ModelChoiceField(queryset=Service_company.objects.all(), label='Сервисная организация', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))  
     class Meta:
         model = Car
-        widgets = {'serial_number': forms.Textarea(attrs={'rows': 1}),
-                   'engine_number': forms.Textarea(attrs={'rows': 1}),
-                   'transmission_number': forms.Textarea(attrs={'rows': 1}),
-                   'drive_axle_number': forms.Textarea(attrs={'rows': 1}),
-                   'steerable_axle_number': forms.Textarea(attrs={'rows': 1}),
-                   'supply_contract': forms.Textarea(attrs={'rows': 1}),
-                   'consignee': forms.Textarea(attrs={'rows': 1}),
-                   'delivery_address': forms.Textarea(attrs={'rows': 1}),
-                   'equipment': forms.Textarea(attrs={'rows': 1}),
-                   'shipping_date': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1)))) }
+        widgets = {'serial_number': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'engine_number': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'transmission_number': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'drive_axle_number': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'steerable_axle_number': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'supply_contract': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'consignee': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'delivery_address': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'equipment': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                    'shipping_date': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))), attrs={"rows": 1,"class":"form-control text-black text-center"})  
+                }
         fields = '__all__'
 
-#class Directory(forms.Form):
-#    name = forms.CharField(label='name', max_length=20)
-#    description = forms.CharField(label='name', max_length=100)
 
 class CreateMaintenanceForm(forms.ModelForm):
     class Meta:
