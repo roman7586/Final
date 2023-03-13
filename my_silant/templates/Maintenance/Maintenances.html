@@ -7,6 +7,21 @@ maintenances
 
 {% block content %}
     <h1>Техническое обслуживание</h1>
+    {% if user.is_authenticated %}
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/">Общая информация</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-silant-red">ТО</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/complaints/">Рекламации</a>
+        </div>
+        </div>
+    </div>
+    {% endif %}
     <form action="" method="get">
             {{ filterset.form.as_p }}
             <input class="btn btn-silant-blue" type="submit" value="Найти" />

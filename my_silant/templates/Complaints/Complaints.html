@@ -6,7 +6,22 @@ complaint
 {% endblock title %}
 
 {% block content %}
-   <h1>Рекламации</h1>
+    <h1>Рекламации</h1>
+    {% if user.is_authenticated %}
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/">Общая информация</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-silant-blue" href="/cars/maintenances/">ТО </a>
+        </div>
+        <div class="col">
+            <a class="btn btn-silant-red">Рекламации</a>
+        </div>
+        </div>
+    </div>
+    {% endif %}
    <form action="" method="get">
         {{ filterset.form.as_p }}
         <input class="btn btn-silant-blue" type="submit" value="Найти" />

@@ -3,10 +3,43 @@
     --silent-blue: #163e6c;
     --silent-dark-blue: #09294b;
     --silent-red: #d20a11;
+    --silent-dark-red: #930f14;
     --silent-sands: #ebe6d6;
 
 
 }
+
+.btn-silant-red {
+  color: var(--silent-sands);
+  background-color: var(--silent-red);
+  border-color: var(--silent-red);
+}
+
+.btn-silant-red:hover {
+  color: var(--silent-sands);
+  background-color: var(--silent-red);
+  border-color: var(--silent-red);
+}
+.btn-check:focus + .btn-silant-red, .btn-silant-red:focus {
+  color: var(--silent-sands);
+  background-color: var(--silent-red);
+  border-color: var(--silent-red);
+  box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
+}
+.btn-check:checked + .btn-silant-red, .btn-check:active + .btn-silant-red, .btn-silant-red:active, .btn-silant-red.active, .show > .btn-silant-red.dropdown-toggle {
+  color: var(--silent-sands);
+  background-color: var(--silent-red);
+  border-color: var(--silent-red);
+}
+.btn-check:checked + .btn-silant-red:focus, .btn-check:active + .btn-silant-red:focus, .btn-silant-red:active:focus, .btn-silant-red.active:focus, .show > .btn-silant-red.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
+}
+.btn-silant-red:disabled, .btn-silant-red.disabled {
+  color: var(--silent-sands);
+  background-color: var(--silent-red);
+  border-color: var(--silent-red);
+}
+
 
 .btn-silant-blue {
     color: var(--silent-sands);
