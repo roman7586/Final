@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 :root {
     --silent-blue: #163e6c;
@@ -7,6 +8,27 @@
     --silent-sands: #ebe6d6;
 
 
+}
+
+@font-face {
+  font-family: 'PT-Astra-Sans_Regular';
+  src: local('PT-Astra-Sans_Regular'), url('/static/fonts/PT Astra Sans/PT-Astra-Sans_Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PT-Astra-Sans_Bold';
+  src: local('PT-Astra-Sans_Bold'), url('/static/fonts/PT Astra Sans/PT-Astra-Sans_Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PT-Astra-Sans_Bold-italic';
+  src: local('PT-Astra-Sans_Bold-italic'), url('/static/fonts/PT Astra Sans/PT-Astra-Sans_Bold-italic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PT-Astra-Sans_Italic';
+  src: local('PT-Astra-Sans_Italic'), url('/static/fonts/PT Astra Sans/PT-Astra-Sans_Italic.ttf') format('truetype');
+}
+
+body {
+font-family: "PT-Astra-Sans_Regular";
 }
 
 .btn-silant-red {
