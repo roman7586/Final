@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Car, Client, Complaints, Drive_axle_model, Engine_model, Maintenance, Organization_maintenance, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
+from .models import Car, Client, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Organization_maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
 from django.utils import timezone
 
 now = timezone.now()
@@ -40,16 +40,20 @@ class CreateMaintenanceForm(forms.ModelForm):
         widgets = {'maintenance_date': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))), attrs={"rows": 1,"class":"form-control text-black text-center"}),
                    'work_order': forms.Textarea(attrs={"rows": 1,"class":"form-control text-black text-center"}),
                    'date_work_order': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))), attrs={"rows": 1,"class":"form-control text-black text-center"}),
-        }
+                }
         fields = '__all__'
 
 class CreateComplaintsForm(forms.ModelForm):
+    operating_time = forms.IntegerField (min_value='0', label='Наработка м/час', widget=forms.NumberInput (attrs={"class":"form-control text-black text-center"}))
+    failure_node = forms.ModelChoiceField(queryset=Failure_node.objects.all(), label='Узел отказа', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    recovery_method = forms.ModelChoiceField(queryset=Recovery_method.objects.all(), label='Способ восстановления', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    car = forms.ModelChoiceField (queryset=Car.objects.all(), label='Машина', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    service_company = forms.ModelChoiceField (queryset=Service_company.objects.all(), label='Сервисная организация', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     class Meta:
         model = Complaints
-        widgets = {'date_of_refusal': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1)))),
-                   'description_failure': forms.Textarea(attrs={'rows': 1}),
-                   'parts_used': forms.Textarea(attrs={'rows': 1}),
-                   'date_of_restoration': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))))
-
-        }
+        widgets = {'date_of_refusal': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))), attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                   'description_failure': forms.Textarea(attrs={'rows': 1,"class":"form-control text-black text-center"}),
+                   'parts_used': forms.Textarea(attrs={'rows': 1,"class":"form-control text-black text-center"}),
+                   'date_of_restoration': forms.SelectDateWidget(years=list(reversed(range(2000, now.year+1))), attrs={"rows": 1,"class":"form-control text-black text-center"}),
+                }
         fields = '__all__'
