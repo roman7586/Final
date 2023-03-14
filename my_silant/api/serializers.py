@@ -55,6 +55,17 @@ class CarSerializer(serializers.Serializer):
     client = ClientSerializer() #Клиент
     service_company = ServiceCompanySerializer() #Сервисная организация
 
+class MiniCarSerializer(serializers.Serializer):
+    serial_number = serializers.CharField() #Серийный номер
+    technique_model = TechniqueModelSerializer() #Модель техники
+    engine_model = EngineModelSerializer() #Модель двигателя
+    engine_number = serializers.CharField() #Зав. № двигателя
+    transmission_model = TransmissionModelSerializer() #Модель трансмиссии
+    transmission_number = serializers.CharField() #Зав. № трансмиссии
+    drive_axle_model = DriveAxleModelSerializer() #Модель ведущего моста
+    drive_axle_number = serializers.CharField() #Зав. № ведущего моста
+    steerable_axle_model = SteerableAxleModelSerializer #Модель управляемого моста
+    steerable_axle_number = serializers.CharField() #Зав. № управляемого моста
 
 class TypeMaintenanceSerializer(serializers.Serializer):
     name = serializers.CharField()
