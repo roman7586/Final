@@ -128,8 +128,8 @@ class CarList(ListView): #Общий список машин
         context['filterset'] = self.filterset
         return context
     
-def dictionaries (request):
-    return render(request, 'dictionaries.html')
+# def dictionaries (request):
+#     return render(request, 'dictionaries.html')
 
 
 class CarDetail(DetailView):
