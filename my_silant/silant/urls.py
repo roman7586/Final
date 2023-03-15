@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import CarCreate, CarDetail, CarEdit, CarList, ComplaintsCreate, ComplaintsEdit, ComplaintsList, MaintenanceCreate, MaintenanceEdit, MaintenanceList,  cardirectory, maintenancedirectory, complaintdirectory, savedictionary #,dictionaries,
+from .views import CarCreate, CarDetail, CarEdit, CarList, ComplaintsCreate, ComplaintsEdit, ComplaintsList, MaintenanceCreate, MaintenanceEdit, MaintenanceList,  cardirectory, maintenancedirectory, complaintdirectory, savedictionary
 
 
 urlpatterns = [
@@ -9,7 +9,6 @@ urlpatterns = [
     path('<int:pk>', CarDetail.as_view(), name='car_info'),
     path('create/', CarCreate.as_view(), name='create_car'),
     path('edit/<int:pk>', CarEdit.as_view(), name='edit_car'),
-    #path('dictionaries/', dictionaries, name='dictionaries'),
     path('dictionary/<str:type>/<int:id>/', cardirectory),
     path('/maintenances/dictionary/<str:type>/<int:id>/', maintenancedirectory),
     path('dictionary/save/', savedictionary),

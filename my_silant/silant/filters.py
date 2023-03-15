@@ -1,7 +1,7 @@
 from .models import Car, Complaints, Drive_axle_model, Engine_model, Failure_node, Maintenance, Recovery_method, Service_company, Steerable_axle_model, Technique_model, Transmission_model, Type_maintenance
 from django_filters import FilterSet, CharFilter, ModelChoiceFilter
 from django import forms
-
+from django.forms.widgets import HiddenInput
 
 class CarFilter(FilterSet):
     technique_model = ModelChoiceFilter(queryset=Technique_model.objects.all(), field_name='technique_model',label='Модель техники', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
@@ -48,7 +48,8 @@ class ComplaintsFilter(FilterSet):
     failure_node = ModelChoiceFilter(queryset=Failure_node.objects.all(), field_name='failure_node',label='Узел отказа', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     recovery_method = ModelChoiceFilter(queryset=Recovery_method.objects.all(), field_name='recovery_method',label='Способ восстановления', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
     service_company = ModelChoiceFilter(queryset=Service_company.objects.all(), field_name='service_company',label='Сервисная организация', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))   
-    car = ModelChoiceFilter(queryset=Car.objects.all(), field_name='car',label='Серийный номер Машины', widget=forms.Select(attrs={"class":"form-control text-black text-center"}))
+    car = ModelChoiceFilter(queryset=Car.objects.all(), field_name='car',label='Серийный номер Машины',widget=HiddenInput()
+)
     # class Meta:
     #     model = Complaints
 

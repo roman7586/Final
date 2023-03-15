@@ -21,16 +21,6 @@ class CarCreate(PermissionRequiredMixin, CreateView):
          self.object.save()
          return redirect(self.get_success_url())
     
-    # def get_queryset(self): # Надо отфильтровать список под клиента, если вошёл под клиентом
-    #     queryset = Car.objects.filter(client__user=self.request.user)
-    #     self.filterset = CarFilter(self.request.GET, queryset)
-    #     return self.filterset.qs
-
-    # def get_context_data(self, **kwargs):
-    #      context = super().get_context_data(**kwargs)
-    #      context['filterset']=self.filterset
-    #      return context
-
 class CarEdit(PermissionRequiredMixin, UpdateView):
     form_class = CreateCarForm
     model = Car
@@ -92,13 +82,6 @@ def complaintdirectory (request, id, type):
         item = Service_company.objects.get(id=id)
     return render(request, 'dictionary.html', {'item': item, 'namegroup' : namegroup, 'type' : type})
                 
-    
-#    form = Directory(request.POST)
-#    if form.is_valid():
-#        form.save()
-#        name = form.cleaned_data.get('name')
-#        description = form.cleaned_data.get('description')
-#        return redirect('/')
 
 class CarList(ListView): #Общий список машин
     model = Car
@@ -128,15 +111,14 @@ class CarList(ListView): #Общий список машин
         context['filterset'] = self.filterset
         return context
     
-# def dictionaries (request):
-#     return render(request, 'dictionaries.html')
-
 
 class CarDetail(DetailView):
     model = Car
     template_name = 'CarDetail.html'
     context_object_name = 'car'
 
+
+# ТЕХНИЧЕСКОЕ ОБСЛУЖИАНИЕ
 class MaintenanceList(PermissionRequiredMixin, ListView): #Общий список ТО
     model = Maintenance
     ordering = 'date_work_order'
@@ -164,7 +146,6 @@ class MaintenanceList(PermissionRequiredMixin, ListView): #Общий списо
         context['filterset'] = self.filterset
         return context
 
-
 class MaintenanceCreate(PermissionRequiredMixin, CreateView):
     model = Maintenance
     form_class = CreateMaintenanceForm
@@ -178,7 +159,6 @@ class MaintenanceCreate(PermissionRequiredMixin, CreateView):
          self.object.save()
          return redirect(self.get_success_url())
     
-
 class MaintenanceEdit(PermissionRequiredMixin, UpdateView):
     form_class = CreateMaintenanceForm
     model = Maintenance
@@ -186,7 +166,6 @@ class MaintenanceEdit(PermissionRequiredMixin, UpdateView):
     permission_required = ('silant.change_maintenance', )
     success_url = '/cars/maintenances/'
 
-    
     def form_valid(self, form): #редирект на список
          self.object = form.save(commit=False)
          self.object.user = self.request.user
@@ -310,15 +289,4 @@ def savedictionary(request):
         model.description = description
         Recovery_method.save(model)      
 
-
-    # if form.is_valid():
-    #     form.save()
-    #     subject = form.cleaned_data.get('title')
-    #     text = form.cleaned_data.get('text')
-    #     mail_list = [mail for mail in User.objects.all().values_list('email', flat=True)[1:]]
-    #     send_mail(
-    #         f'{subject}',
-    #         f'{text}',
-    #         mail_list
-    #     )
     return redirect('/')
