@@ -45,7 +45,7 @@ class CarSerializer(serializers.Serializer):
     transmission_number = serializers.CharField() #Зав. № трансмиссии
     drive_axle_model = DriveAxleModelSerializer() #Модель ведущего моста
     drive_axle_number = serializers.CharField() #Зав. № ведущего моста
-    steerable_axle_model = SteerableAxleModelSerializer #Модель управляемого моста
+    steerable_axle_model = SteerableAxleModelSerializer() #Модель управляемого моста
     steerable_axle_number = serializers.CharField() #Зав. № управляемого моста
     supply_contract = serializers.CharField() #Договор поставки №, дата
     shipping_date = serializers.DateField() #Дата отгрузки с завода
@@ -64,7 +64,7 @@ class MiniCarSerializer(serializers.Serializer):
     transmission_number = serializers.CharField() #Зав. № трансмиссии
     drive_axle_model = DriveAxleModelSerializer() #Модель ведущего моста
     drive_axle_number = serializers.CharField() #Зав. № ведущего моста
-    steerable_axle_model = SteerableAxleModelSerializer #Модель управляемого моста
+    steerable_axle_model = SteerableAxleModelSerializer() #Модель управляемого моста
     steerable_axle_number = serializers.CharField() #Зав. № управляемого моста
 
 class TypeMaintenanceSerializer(serializers.Serializer):
