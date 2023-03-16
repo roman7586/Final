@@ -15,11 +15,6 @@ class CarViewSet(viewsets.ModelViewSet):
         else:
             return CarSerializer # если не авторизован отобразить полный список
 
-# class MaintenanceViewSet(viewsets.ModelViewSet):
-#     queryset = Maintenance.objects.all().order_by('maintenance_date')
-#     serializer_class = MaintenanceSerializer
-#     permission_classes = [permissions.IsAuthenticated] # Отображение значений только авторизованным
-
 class MaintenanceList(generics.ListAPIView):
     serializer_class = MaintenanceSerializer
     permission_classes = [IsAuthenticated]
@@ -36,12 +31,6 @@ class MaintenanceList(generics.ListAPIView):
             queryset = Maintenance.objects.none()
         return queryset
     
-# class ComplaintsViewSet(viewsets.ModelViewSet):
-#     queryset = Complaints.objects.all().order_by('date_of_refusal')
-#     serializer_class = ComplaintsSerializer
-#     permission_classes = [permissions.IsAuthenticated] # Отображение значений только авторизованным
-
-
 class ComplaintsList(generics.ListAPIView):
     serializer_class = ComplaintsSerializer
     permission_classes = [IsAuthenticated]
